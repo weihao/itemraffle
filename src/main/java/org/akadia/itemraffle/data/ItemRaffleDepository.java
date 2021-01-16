@@ -11,21 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemRaffleDepository implements Comparable<ItemRaffleDepository> {
+    private String key;
     private DepositorySelection depositorySelection;
     private DepositoryMode depositoryMode;
     private int itemSelectIndex;
     private int drawingInterval;
     private long nextDrawingTime;
     private ItemStack icon;
-    private ItemStack[] prizes;
+    private List<ItemStack> prizes;
     private String name;
-
-
-    private String key;
     private Map<String, String> playerDepositMap;
     private List<ItemRaffleWinnerInfo> history;
 
-    public ItemRaffleDepository(String key, DepositorySelection depositorySelection, DepositoryMode depositoryMode, int itemSelectIndex, int drawingInterval, long nextDrawingTime, ItemStack icon, ItemStack[] prizes, String name, Map<String, String> playerDepositMap, List<ItemRaffleWinnerInfo> history) {
+    public ItemRaffleDepository(String key, DepositorySelection depositorySelection, DepositoryMode depositoryMode, int itemSelectIndex, int drawingInterval, long nextDrawingTime, ItemStack icon, List<ItemStack> prizes, String name, Map<String, String> playerDepositMap, List<ItemRaffleWinnerInfo> history) {
         this.key = key;
         this.depositorySelection = depositorySelection;
         this.depositoryMode = depositoryMode;
@@ -107,11 +105,11 @@ public class ItemRaffleDepository implements Comparable<ItemRaffleDepository> {
         this.icon = icon;
     }
 
-    public ItemStack[] getPrizes() {
+    public List<ItemStack> getPrizes() {
         return prizes;
     }
 
-    public void setPrizes(ItemStack[] prizes) {
+    public void setPrizes(List<ItemStack> prizes) {
         this.prizes = prizes;
     }
 

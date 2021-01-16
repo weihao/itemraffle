@@ -4,9 +4,12 @@ import de.themoep.inventorygui.GuiStorageElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.utils.InventoryUtil;
+import org.akadia.itemraffle.utils.ItemStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 public class DepositoryViewerCommonMenu extends BaseCommonMenu {
 
@@ -24,7 +27,8 @@ public class DepositoryViewerCommonMenu extends BaseCommonMenu {
         }
         this.getGui().addElement(new GuiStorageElement('i', inv));
         this.getGui().setCloseAction(close -> {
-            depository.setPrizes(InventoryUtil.sort(inv));
+            ItemStack[] sort = InventoryUtil.sort(inv);
+            depository.setPrizes(ItemStackUtil.arrayToList(sort.clone()));
             this.getMain().getDepositoryConfiguration().saveDepository(depository);
             return true; // Don't go back to the previous GUI (true would automatically go back to the previously opened one)
         });

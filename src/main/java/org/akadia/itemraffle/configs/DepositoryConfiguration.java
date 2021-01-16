@@ -6,6 +6,7 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
 import org.akadia.itemraffle.enums.DepositoryMode;
 import org.akadia.itemraffle.enums.DepositorySelection;
+import org.akadia.itemraffle.utils.ItemStackUtil;
 import org.akadia.itemraffle.utils.SerializeUtil;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,8 +39,8 @@ public class DepositoryConfiguration extends Configuration {
             int drawingInterval = this.getInt("depository", depositoryKey, "drawingInterval");
             long nextDrawingTime = this.getLong("depository", depositoryKey, "nextDrawingTime");
             ItemStack[] prizes = SerializeUtil.itemStackArrayFromBase64(base64);
-
-            List<String> players = this.getStringList("depository", depositoryKey, "deposits");
+            List<ItemStack> prizesList = ItemStackUtil.arrayToList(prizes);
+            Set<String> players = this.getConfigurationSection("depository", depositoryKey, "deposits");
             HashMap<String, String> deposits = new HashMap<>();
             for (String player : players) {
                 deposits.put(player, this.getString("depository", depositoryKey, "deposits", player));
@@ -69,7 +70,7 @@ public class DepositoryConfiguration extends Configuration {
                     drawingInterval,
                     nextDrawingTime,
                     icon,
-                    prizes,
+                    prizesList,
                     name,
                     deposits,
                     history));
@@ -79,6 +80,12 @@ public class DepositoryConfiguration extends Configuration {
         Collections.sort(depositories);
     }
 
+    @Override
+    public void onDisable() {
+        for (ItemRaffleDepository depository : this.getDepositories()) {
+            this.saveDepository(depository);
+        }
+    }
 
     public void saveDepository(ItemRaffleDepository depository) {
 //       this.config.set("depository",  depository.getKey() , "depositorySelection", depository.getDepositorySelection());
@@ -89,8 +96,9 @@ public class DepositoryConfiguration extends Configuration {
                 depository.getNextDrawingTime(),
                 "depository", depository.getKey(), "nextDrawingTime"
         );
+
         this.setValue(
-                SerializeUtil.itemStackArrayToBase64(depository.getPrizes()),
+                SerializeUtil.itemStackArrayToBase64(ItemStackUtil.listToArray(depository.getPrizes())),
                 "depository", depository.getKey(), "prizes"
         );
 
@@ -101,8 +109,15 @@ public class DepositoryConfiguration extends Configuration {
         }
 
         for (ItemRaffleWinnerInfo history : depository.getHistory()) {
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", String.valueOf(history.getDrawTimestamp()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "username", history.getUsername());
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "drawTimestamp", String.valueOf(history.getDrawTimestamp()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "totalPoolValue", String.valueOf(history.getTotalPoolValue()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "totalEntry", String.valueOf(history.getTotalEntry()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "playerDepositValue", String.valueOf(history.getPlayerDepositValue()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "chance", String.valueOf(history.getChance()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "awardedPrize", String.valueOf(history.getAwardedPrize()));
         }
+
 
         this.writeConfigFile();
     }

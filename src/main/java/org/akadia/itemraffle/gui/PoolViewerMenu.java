@@ -32,8 +32,13 @@ public class PoolViewerMenu extends BaseMenu {
 
             return;
         }
-        ItemStack prize = pool.getSelectedItemStack();
-        this.getGui().addElement(new DynamicGuiElement('i', (viewer) -> new StaticGuiElement('i', prize))); // icon
+
+        this.getGui().addElement(new DynamicGuiElement('i', (viewer) -> new StaticGuiElement('i', pool.getSelectedItemStack()))); // icon
+        this.getGui().addElement(new StaticGuiElement('h', new ItemStack(Material.BOOK), 1, click -> {
+            this.pool.getDepositoryHistoryCommonMenu().open(player);
+            return true;
+        }));
+
         this.getGui().addElement(new StaticGuiElement('d', new ItemStack(Material.OAK_SIGN), 1, click -> {
             click.getGui().close();
             new AnvilGUI
@@ -44,7 +49,7 @@ public class PoolViewerMenu extends BaseMenu {
                             if (v <= 0) {
                                 return AnvilGUI.Response.text("Cannot be negative!");
                             }
-                            if (!pool.addCurrentPoolPlayerEconomy0(pl, text)) {
+                            if (!pool.playerDeposit(pl, text)) {
                                 return AnvilGUI.Response.text("Not enough money!");
                             }
                             getMain().getDepositoryConfiguration().saveDepository(depository);
@@ -95,7 +100,7 @@ public class PoolViewerMenu extends BaseMenu {
     @Override
     String[] getSetup() {
         return new String[]{
-                "di       ",
+                "dih       ",
                 "ggggggggg",
                 "ggggggggg",
                 "ggggggggg",

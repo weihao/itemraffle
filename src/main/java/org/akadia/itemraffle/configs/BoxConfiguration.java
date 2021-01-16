@@ -1,6 +1,7 @@
 package org.akadia.itemraffle.configs;
 
 import org.akadia.itemraffle.ItemRaffleMain;
+import org.akadia.itemraffle.utils.ItemStackUtil;
 import org.akadia.itemraffle.utils.SerializeUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BoxConfiguration extends Configuration {
+    public HashMap<String, List<ItemStack>> getBoxes() {
+        return boxes;
+    }
+
     private final HashMap<String, List<ItemStack>> boxes;
 
     public BoxConfiguration(ItemRaffleMain main) {
@@ -19,7 +24,7 @@ public class BoxConfiguration extends Configuration {
         List<String> players = this.getStringList("boxes");
         for (String player : players) {
             String base64 = this.getString("boxes", player);
-            List<ItemStack> list = Arrays.asList(SerializeUtil.itemStackArrayFromBase64(base64));
+            List<ItemStack> list = ItemStackUtil.arrayToList(SerializeUtil.itemStackArrayFromBase64(base64));
             this.boxes.put(player, list);
         }
     }
@@ -27,6 +32,13 @@ public class BoxConfiguration extends Configuration {
     @Override
     public String getConfigName() {
         return "box.yml";
+    }
+
+    @Override
+    public void onDisable() {
+        for (String player : this.getBoxes().keySet()) {
+            this.saveBox(player);
+        }
     }
 
     public void addItemToBox(String player, ItemStack... itemStacks) {
@@ -54,12 +66,7 @@ public class BoxConfiguration extends Configuration {
 
     public void saveBox(String player) {
         List<ItemStack> list = this.boxes.get(player);
-        ItemStack[] items = new ItemStack[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            items[i] = list.get(i);
-        }
-
-        this.setValue(SerializeUtil.itemStackArrayToBase64(items), "boxes", player);
+        this.setValue(SerializeUtil.itemStackArrayToBase64(ItemStackUtil.listToArray(list)), "boxes", player);
         this.writeConfigFile();
     }
 

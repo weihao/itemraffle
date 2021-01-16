@@ -23,11 +23,12 @@ public class ItemRaffleMain extends JavaPlugin {
 
 
     private DepositoryConfiguration depositoryConfiguration;
+    private BoxConfiguration boxConfiguration;
+
     private CommandManager commandManager;
     private GUIManager guiManager;
 
 
-    private BoxConfiguration boxConfiguration;
     private Economy economy;
 
     public static ItemRaffleMain getItemRaffleMain() {
@@ -86,8 +87,8 @@ public class ItemRaffleMain extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
     }
+
 
     private boolean setupEconomy() {
         Plugin plugin = this.getServer().getPluginManager().getPlugin("Vault");
@@ -100,5 +101,8 @@ public class ItemRaffleMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        depositoryConfiguration.onDisable();
+        boxConfiguration.onDisable();
     }
+
 }

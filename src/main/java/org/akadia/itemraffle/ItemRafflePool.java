@@ -5,9 +5,11 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.data.ItemRaffleEntryInfo;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
 import org.akadia.itemraffle.enums.PoolState;
+import org.akadia.itemraffle.gui.DepositoryHistoryCommonMenu;
 import org.akadia.itemraffle.gui.DepositoryViewerCommonMenu;
 import org.akadia.itemraffle.gui.PoolViewerMenu;
 import org.akadia.itemraffle.utils.RandomUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,6 +26,10 @@ import java.util.logging.Level;
 public class ItemRafflePool {
 
     private final DepositoryViewerCommonMenu depositoryViewerCommonMenu;
+
+
+
+    private final DepositoryHistoryCommonMenu depositoryHistoryCommonMenu;
     private final Map<String, PoolViewerMenu> poolViewerMenus;
     private final ItemRaffleDepository itemRaffleDepository;
     private final ItemRaffleMain main;
@@ -34,21 +40,16 @@ public class ItemRafflePool {
         this.main = main;
         this.itemRaffleDepository = itemRaffleDepository;
         this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository);
+        this.depositoryHistoryCommonMenu = new DepositoryHistoryCommonMenu(main, this);
         this.poolViewerMenus = new HashMap<>();
 
-        if (!this.hasValidDepository()) {
-            // 物品抽奖仓库没有有效的物品
-            this.setState(PoolState.STOPPED);
-            this.main.getLogger().log(Level.WARNING, "物品抽奖仓库未存在物品, 抽奖池处于无效状态...");
-            return;
-        }
-
-        if (this.getItemRaffleDepository().getNextDrawingTime() < System.currentTimeMillis()) {
+        if (itemRaffleDepository.getNextDrawingTime() == -1L) {
             this.setNextDrawingTime();
         }
 
-        this.setState(PoolState.RUNNING);
-        this.main.getLogger().log(Level.INFO, "抽奖池开始正常工作, 距离此次开奖剩余 {0} 秒...", getRemainingNextDrawTime());
+    }
+    public DepositoryHistoryCommonMenu getDepositoryHistoryCommonMenu() {
+        return depositoryHistoryCommonMenu;
     }
 
     public DepositoryViewerCommonMenu getDepositoryViewerCommonMenu() {
@@ -71,35 +72,31 @@ public class ItemRafflePool {
         this.state = state;
     }
 
-    private boolean hasValidDepository() {
-        return itemRaffleDepository.getPrizes().length > 0;
-    }
-
     public long getRemainingNextDrawTime() {
         return (itemRaffleDepository.getNextDrawingTime() - System.currentTimeMillis()) / 1000L;
     }
 
     public void run() {
+
+        // 暂停状态
+        if (!this.validateDepository()) {
+            this.setState(PoolState.STOPPED);
+            this.main.getLogger().log(Level.WARNING, "物品抽奖仓库设置错误, 抽奖池处于无效状态...");
+            return;
+        }
+
         this.main.getLogger().log(Level.INFO, "抽奖池开始正常工作, 距离此次开奖剩余 {0} 秒...", getRemainingNextDrawTime());
+        this.setState(PoolState.RUNNING);
 
-        if (this.getState().equals(PoolState.STOPPED)) {
-            // 如果是暂停状态
-
-            return;
-        }
-        if (this.getState().equals(PoolState.ERROR)) {
-            // 处于错误状态
-
-            return;
-        }
-//
-        if (this.getItemRaffleDepository().getNextDrawingTime() <= System.currentTimeMillis()) {
-            if (!validateOpenCondition()) {
+        if (this.isDrawingTimeNow()) {
+            if (!validateDrawCondition()) {
                 this.main.getLogger().log(Level.INFO, "此次抽奖池未达到开奖条件, 开始下一轮抽奖...");
                 this.setNextDrawingTime();
                 return;
             }
             ItemRaffleWinnerInfo winnerInfo = calculateFinalAwardWinner();
+            this.getItemRaffleDepository().getHistory().add(winnerInfo);
+            this.main.getDepositoryConfiguration().saveDepository(this.getItemRaffleDepository());
             // 可以开奖了
 //            this.saveHistoryRecord(calculateFinalAwardWinner()); // 计算最终获奖者保存此次抽奖池到历史记录
 //            this.next(); // 开始下一次抽奖池
@@ -107,41 +104,58 @@ public class ItemRafflePool {
         }
     }
 
-    private boolean validateOpenCondition() {
-        // 验证抽奖池开奖条件
-        return getPlayerCount() >= 1;
+    /**
+     * @return validate if the depository is setup correctly
+     */
+    public boolean validateDepository() {
+        return this.isSelectedIndexValid() && !this.isEmpty();
+    }
+
+    /**
+     * @return validate if the pool is ready to draw a winner
+     */
+    public boolean validateDrawCondition() {
+        return this.getPlayerCount() >= 1;
+    }
+
+    /**
+     *
+     * @return validate if the timer ready to draw a winner
+     */
+    public boolean isDrawingTimeNow() {
+        return this.getItemRaffleDepository().getNextDrawingTime() <= System.currentTimeMillis();
     }
 
     public void setNextDrawingTime() {
-        itemRaffleDepository.setNextDrawingTime(System.currentTimeMillis() + itemRaffleDepository.getDrawingInterval() * 1000L);
+        this.itemRaffleDepository.setNextDrawingTime(System.currentTimeMillis() + this.itemRaffleDepository.getDrawingInterval() * 1000L);
     }
 
-    private BigDecimal handlerBigDecimal(BigDecimal bigDecimal) {
+    private BigDecimal handleBigDecimal(BigDecimal bigDecimal) {
         // 处理 BigDecimal 的小数保留位数以及四舍五入
         if (bigDecimal == null) bigDecimal = new BigDecimal(0d);
         return bigDecimal.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public boolean addCurrentPoolPlayerEconomy0(Player player, String economy) {
+    public boolean playerDeposit(Player player, String deposit) {
         // 将指定玩家的金钱数据掷入到当前抽奖池
-        BigDecimal bigDecimal = takePlayerEconomy(player, handlerBigDecimal(new BigDecimal(economy)));
-        return bigDecimal != null && addCurrentPoolPlayerEconomy0(player.getName(), bigDecimal);
+        BigDecimal bigDecimal = deductPlayerEco(player, handleBigDecimal(new BigDecimal(deposit)));
+        return bigDecimal != null && playerDeposit(player.getName(), bigDecimal);
     }
 
-    private boolean addCurrentPoolPlayerEconomy0(String name, BigDecimal economy) {
+    private boolean playerDeposit(String username, BigDecimal deposit) {
         // 将指定玩家的金钱数据掷入到当前抽奖池
-        String cache = itemRaffleDepository.getPlayerDepositMap().get(name);
+        String cache = itemRaffleDepository.getPlayerDepositMap().get(username);
         if (cache == null) {
-            itemRaffleDepository.getPlayerDepositMap().put(name, economy.toPlainString());
+            itemRaffleDepository.getPlayerDepositMap().put(username, deposit.toPlainString());
             return true;
         }
-        economy = economy.add(new BigDecimal(cache));
-        itemRaffleDepository.getPlayerDepositMap().replace(name, economy.toPlainString());
+        deposit = deposit.add(new BigDecimal(cache));
+        itemRaffleDepository.getPlayerDepositMap().replace(username, deposit.toPlainString());
         return true;
     }
 
 
-    private BigDecimal takePlayerEconomy(Player player, BigDecimal bigDecimal) {
+    private BigDecimal deductPlayerEco(Player player, BigDecimal bigDecimal) {
         // 从指定玩家经济账户减去指定经济余额
         try {
             double value = bigDecimal.doubleValue();
@@ -166,18 +180,24 @@ public class ItemRafflePool {
         BigDecimal base = new BigDecimal(0);
         for (String economy : getItemRaffleDepository().getPlayerDepositMap().values())
             base = base.add(new BigDecimal(economy));
-        return handlerBigDecimal(base);
+        return handleBigDecimal(base);
     }
 
+    /**
+     * @return total number of players that have deposit in the pool
+     */
     public int getPlayerCount() {
-        // 获取当前抽奖池总共掷入的玩家数量
-        return getItemRaffleDepository().getPlayerDepositMap().size();
+        return this.getItemRaffleDepository().getPlayerDepositMap().size();
+    }
+
+    /**
+     * @return total number of prizes in the pool
+     */
+    public int getItemCount() {
+        return this.getItemRaffleDepository().getPrizes().size();
     }
 
     private ItemRaffleWinnerInfo calculateFinalAwardWinner() {
-        ItemRaffleEntryInfo winnerEntry;
-//         计算抽奖池最终的获奖者
-        BigDecimal totalPoolDeposit = getTotalPoolDeposit();
         int totalEntry = getPlayerCount();
 
         if (totalEntry == 0) {
@@ -185,6 +205,9 @@ public class ItemRafflePool {
             this.main.getLogger().log(Level.INFO, "此次抽奖池没有任何玩家掷入金钱, 无法计算获奖者...");
             return null;
         }
+
+        ItemRaffleEntryInfo winnerEntry;
+        BigDecimal totalPoolDeposit = getTotalPoolDeposit();
 
         if (totalEntry > 1) {
             List<ItemRaffleEntryInfo> list = new ArrayList<>();
@@ -225,36 +248,38 @@ public class ItemRafflePool {
             case DRAIN:
                 this.shiftPrizes();
                 break;
+            case CYCLE:
+                this.incrementSelectIndex();
+                if (!isSelectedIndexValid()) {
+                    this.getItemRaffleDepository().setItemSelectIndex(0);
+                }
             default:
                 this.incrementSelectIndex();
         }
+        this.setNextDrawingTime();
 
         // 将抽奖池的物品发送给玩家
         this.main.getBoxManager().addItemToBox(winnerInfo.getUsername(), winnerInfo.getAwardedPrize());
-//        if (ItemRaffleManager.sendItemToItemBox(winnerInfo.getUsername(), awardItem)) {
-//            // 如果奖励物品发送成功则获取玩家如果在线则提示
-//            Player player = PlayerManager.fromName(winnerInfo.getUsername());
-//            if (player != null)
-//                player.sendMessage(getMain().getMessage("ItemRaffleAwardSendItemBox"));
-//        }
+            // 如果奖励物品发送成功则获取玩家如果在线则提示
+            Player player = Bukkit.getServer().getPlayer(winnerInfo.getUsername());
+            if (player != null)
+                player.sendMessage("You won a prize!");
         return winnerInfo;
     }
 
     public void shiftPrizes() {
-        ItemStack[] prizes = itemRaffleDepository.getPrizes();
-        ItemStack[] shift = new ItemStack[prizes.length - 1];
-        for (int i = 1; i < prizes.length; i++) {
-            shift[i - 1] = prizes[i];
-        }
-        itemRaffleDepository.setPrizes(shift);
+        List<ItemStack> prizes = itemRaffleDepository.getPrizes();
+        prizes.remove(0);
     }
 
     public void incrementSelectIndex() {
         int selectIndex;
         switch (itemRaffleDepository.getDepositorySelection()) {
             case RANDOM:
-                selectIndex = new Random().nextInt(itemRaffleDepository.getPrizes().length);
+                selectIndex = new Random().nextInt(itemRaffleDepository.getPrizes().size());
                 break;
+            case SEQUENTIAL:
+                selectIndex = itemRaffleDepository.getItemSelectIndex() + 1;
             default:
                 selectIndex = itemRaffleDepository.getItemSelectIndex() + 1;
         }
@@ -262,7 +287,11 @@ public class ItemRafflePool {
     }
 
     public ItemStack getSelectedItemStack() {
-        return itemRaffleDepository.getPrizes()[itemRaffleDepository.getItemSelectIndex()];
+        return itemRaffleDepository.getPrizes().get(itemRaffleDepository.getItemSelectIndex());
+    }
+
+    public boolean isSelectedIndexValid() {
+        return this.getItemRaffleDepository().getItemSelectIndex() < this.getItemCount();
     }
 
     private BigDecimal calculateChance(BigDecimal total, String economy) {
@@ -298,7 +327,7 @@ public class ItemRafflePool {
     }
 
     public boolean isEmpty() {
-        return this.getItemRaffleDepository().getPrizes().length <= 0;
+        return this.getItemRaffleDepository().getPrizes().size() <= 0;
     }
 
 }

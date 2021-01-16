@@ -24,30 +24,34 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
         for (ItemRafflePool pool : pools) {
             ItemRaffleDepository depository = pool.getItemRaffleDepository();
             DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i',
-                    (viewer) -> new StaticGuiElement('i', depository.getIcon(), 1, click -> {
-                        if (click.getType().isRightClick() && click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
-                            pool.getDepositoryViewerCommonMenu().open(viewer);
-                            return true;
-                        }
+                    (viewer) -> {
+                        if (pool.validateDepository()) {
+                            return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
+                                if (click.getType().isRightClick() && click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                                    pool.getDepositoryViewerCommonMenu().open(viewer);
+                                    return true;
+                                }
 
-                        if (pool.isEmpty()) {
-                            return true;
+                                PoolViewerMenu poolViewerMenu = new PoolViewerMenu(main, viewer, pool);
+                                pool.getPoolViewerMenus().put(viewer.getName(), poolViewerMenu);
+                                poolViewerMenu.open(viewer);
+                                return true;
+                            }, depository.getName(),
+                                    depository.getDepositoryMode() + "",
+                                    depository.getDepositorySelection() + "",
+                                    depository.getDrawingInterval() + "",
+                                    depository.getNextDrawingTime() + "",
+                                    pool.getRemainingNextDrawTime() + "");
+                        } else {
+                            return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
+                                if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                                    pool.getDepositoryViewerCommonMenu().open(viewer);
+                                }
+                                return true;
+                            }, "DISABLED", "DISABLED");
                         }
+                    });
 
-                        PoolViewerMenu poolViewerMenu = new PoolViewerMenu(main, viewer, pool);
-                        pool.getPoolViewerMenus().put(viewer.getName(), poolViewerMenu);
-                        poolViewerMenu.open(viewer);
-                        return true;
-                    }, !pool.isEmpty() ? new String[]{
-                            depository.getName(),
-                            depository.getDepositoryMode() + "",
-                            depository.getDepositorySelection() + "",
-                            depository.getDrawingInterval() + "",
-                            depository.getNextDrawingTime() + "",
-                            pool.getRemainingNextDrawTime() + ""
-                    } : new String[]{
-                            depository.getName(), "EMPTY POOL", "DISABLED"
-                    }));
             group.addElement(dynamicGuiElement);
         }
         this.getGui().addElement(group);

@@ -8,7 +8,7 @@ depository:
     icon: DIAMOND_ORE
     nextDrawingTime: -1
     prizes: ""
-    deposits: [ ]
+    deposits: { }
     history: { }
   weekly:
     name: weekly pool
@@ -19,5 +19,5 @@ depository:
     icon: DIAMOND_ORE
     nextDrawingTime: -1
     prizes: ""
-    deposits: [ ]
+    deposits: { }
     history: { }

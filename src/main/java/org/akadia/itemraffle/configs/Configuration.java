@@ -26,6 +26,8 @@ public abstract class Configuration {
 
     public abstract String getConfigName();
 
+    public abstract void onDisable();
+
     public String getString(String... nodes) {
         return this.getConfig().getString(String.join(".", nodes));
     }
