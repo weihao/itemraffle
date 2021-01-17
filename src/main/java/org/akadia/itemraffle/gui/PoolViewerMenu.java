@@ -28,12 +28,18 @@ public class PoolViewerMenu extends BaseMenu {
         this.pool = pool;
 
         ItemRaffleDepository depository = pool.getItemRaffleDepository();
-        if (pool.isEmpty()) {
-
+        if (!pool.validateDepository()) {
+            this.getGui().close();
             return;
         }
 
-        this.getGui().addElement(new DynamicGuiElement('i', (viewer) -> new StaticGuiElement('i', pool.getSelectedItemStack()))); // icon
+        this.getGui().addElement(new DynamicGuiElement('i', (viewer) -> {
+            if (!pool.validateDepository()) {
+                return new StaticGuiElement('i', new ItemStack(Material.END_PORTAL_FRAME));
+            }
+            return new StaticGuiElement('i', pool.getSelectedItemStack());
+
+        })); // icon
         this.getGui().addElement(new StaticGuiElement('h', new ItemStack(Material.BOOK), 1, click -> {
             this.pool.getDepositoryHistoryCommonMenu().open(player);
             return true;
@@ -100,7 +106,7 @@ public class PoolViewerMenu extends BaseMenu {
     @Override
     String[] getSetup() {
         return new String[]{
-                "dih       ",
+                "dih      ",
                 "ggggggggg",
                 "ggggggggg",
                 "ggggggggg",

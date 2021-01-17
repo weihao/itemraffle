@@ -43,7 +43,6 @@ public class GUIManager extends BukkitRunnable {
                 }
                 set.add(open);
                 open.draw();
-                System.out.println(onlinePlayer.getName() + " drawed");
             }
         }
     }

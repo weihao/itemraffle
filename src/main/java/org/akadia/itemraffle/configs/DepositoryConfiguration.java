@@ -109,13 +109,13 @@ public class DepositoryConfiguration extends Configuration {
         }
 
         for (ItemRaffleWinnerInfo history : depository.getHistory()) {
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "username", history.getUsername());
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "drawTimestamp", String.valueOf(history.getDrawTimestamp()));
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "totalPoolValue", String.valueOf(history.getTotalPoolValue()));
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "totalEntry", String.valueOf(history.getTotalEntry()));
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "playerDepositValue", String.valueOf(history.getPlayerDepositValue()));
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "chance", String.valueOf(history.getChance()));
-            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "awardedPrize", String.valueOf(history.getAwardedPrize()));
+            this.setValue(history.getUsername(), "depository", depository.getKey(), "history", history.getId(), "username");
+            this.setValue(String.valueOf(history.getDrawTimestamp()), "depository", depository.getKey(), "history", history.getId(), "drawTimestamp");
+            this.setValue(String.valueOf(history.getTotalPoolValue()), "depository", depository.getKey(), "history", history.getId(), "totalPoolValue");
+            this.setValue(String.valueOf(history.getTotalEntry()), "depository", depository.getKey(), "history", history.getId(), "totalEntry");
+            this.setValue(String.valueOf(history.getPlayerDepositValue()), "depository", depository.getKey(), "history", history.getId(), "playerDepositValue");
+            this.setValue(String.valueOf(history.getChance()), "depository", depository.getKey(), "history", history.getId(), "chance");
+            this.setValue(SerializeUtil.itemStackArrayToBase64(new ItemStack[]{history.getAwardedPrize()}), "depository", depository.getKey(), "history", history.getId(), "awardedPrize");
         }
 
 

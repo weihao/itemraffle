@@ -4,7 +4,7 @@ depository:
     depositorySelection: sequential # sequential or random
     depositoryMode: cycle # cycle or drain
     itemSelectIndex: 0 # from beginning
-    drawingInterval: 86400 # in seconds
+    drawingInterval: 10 # in seconds
     icon: DIAMOND_ORE
     nextDrawingTime: -1
     prizes: ""

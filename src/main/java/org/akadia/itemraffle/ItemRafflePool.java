@@ -253,6 +253,7 @@ public class ItemRafflePool {
                 if (!isSelectedIndexValid()) {
                     this.getItemRaffleDepository().setItemSelectIndex(0);
                 }
+                break;
             default:
                 this.incrementSelectIndex();
         }
@@ -280,6 +281,7 @@ public class ItemRafflePool {
                 break;
             case SEQUENTIAL:
                 selectIndex = itemRaffleDepository.getItemSelectIndex() + 1;
+                break;
             default:
                 selectIndex = itemRaffleDepository.getItemSelectIndex() + 1;
         }

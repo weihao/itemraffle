@@ -7,9 +7,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class RandomUtil {
-    private TreeMap<Double, ItemRaffleEntryInfo> weightMap = new TreeMap<>();
+    private TreeMap<Double, ItemRaffleEntryInfo> weightMap;
 
     public RandomUtil(List<ItemRaffleEntryInfo> list) {
+        weightMap = new TreeMap<>();
         for (ItemRaffleEntryInfo entryInfo : list) {
             double lastWeight = this.weightMap.size() == 0 ? 0 : this.weightMap.lastKey();
             this.weightMap.put(Double.parseDouble(entryInfo.getDeposit()) + lastWeight, entryInfo);
