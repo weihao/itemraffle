@@ -1,4 +1,4 @@
-package org.akadia.itemraffle.gui;
+package org.akadia.itemraffle.guis;
 
 import com.cryptomorin.xseries.XMaterial;
 import de.themoep.inventorygui.DynamicGuiElement;

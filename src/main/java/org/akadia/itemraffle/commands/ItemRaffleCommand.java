@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Subcommand;
 import org.akadia.itemraffle.ItemRaffleMain;
+import org.akadia.itemraffle.guis.BoxViewerMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,5 +31,9 @@ public class ItemRaffleCommand extends BaseCommand {
         this.main.getGuiManager().getDepositoryListCommonMenu().open(player);
     }
 
+    @Subcommand("box")
+    public void onBox(Player player) {
+        new BoxViewerMenu(main, player).open(player);
+    }
 
 }

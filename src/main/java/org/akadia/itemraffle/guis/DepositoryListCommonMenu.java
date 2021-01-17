@@ -1,4 +1,4 @@
-package org.akadia.itemraffle.gui;
+package org.akadia.itemraffle.guis;
 
 import com.cryptomorin.xseries.XMaterial;
 import de.themoep.inventorygui.DynamicGuiElement;
@@ -8,6 +8,7 @@ import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
+import org.akadia.itemraffle.enums.PoolState;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                         if (pool.validateDepository()) {
                             return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
                                 if (click.getType().isRightClick() && click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                                    pool.setState(PoolState.BLOCKED);
                                     pool.getDepositoryViewerCommonMenu().open(viewer);
                                     return true;
                                 }
@@ -45,6 +47,7 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                         } else {
                             return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
                                 if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                                    pool.setState(PoolState.BLOCKED);
                                     pool.getDepositoryViewerCommonMenu().open(viewer);
                                 }
                                 return true;

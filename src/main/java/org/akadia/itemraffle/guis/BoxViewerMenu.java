@@ -1,30 +1,36 @@
-package org.akadia.itemraffle.gui;
+package org.akadia.itemraffle.guis;
 
 import com.cryptomorin.xseries.XMaterial;
-import de.themoep.inventorygui.DynamicGuiElement;
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.GuiPageElement;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
-import org.akadia.itemraffle.ItemRafflePool;
-import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
-import org.bukkit.Material;
+import org.akadia.itemraffle.configs.BoxConfiguration;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
+public class BoxViewerMenu extends BaseMenu {
 
-    public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
-        super(main);
+
+    public BoxViewerMenu(ItemRaffleMain main, HumanEntity player) {
+        super(main, player, player.getName());
+        BoxConfiguration boxManager = this.getMain().getBoxManager();
+        List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());
+
 
         GuiElementGroup group = new GuiElementGroup('i');
 
-        List<ItemRaffleWinnerInfo> history = pool.getItemRaffleDepository().getHistory();
-        for (ItemRaffleWinnerInfo winnerInfo : history) {
-            DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i', (viewer)
-                    -> new StaticGuiElement('i', new ItemStack(Material.PAPER), winnerInfo.getUsername(), winnerInfo.getChance(), winnerInfo.getPlayerDepositValue()));
-            group.addElement(dynamicGuiElement);
+        for (int i = 0; i < itemStacks.size(); i++) {
+            StaticGuiElement s = new StaticGuiElement('i', itemStacks.get(i), click -> {
+                boxManager.claimAll((Player) player);
+                group.clearElements();
+                return true;
+            });
+            group.addElement(s);
         }
 
         this.getGui().addElement(group);
@@ -34,7 +40,6 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
     }
 
-
     @Override
     String[] getSetup() {
         return new String[]{
@@ -43,13 +48,13 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
                 "iiiiiiiii",
                 "iiiiiiiii",
                 "iiiiiiiii",
-                "p       n",
+                "p       n"
         };
     }
 
     @Override
     String getName() {
-        return "History";
+        return "";
     }
 
 

@@ -5,9 +5,9 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.data.ItemRaffleEntryInfo;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
 import org.akadia.itemraffle.enums.PoolState;
-import org.akadia.itemraffle.gui.DepositoryHistoryCommonMenu;
-import org.akadia.itemraffle.gui.DepositoryViewerCommonMenu;
-import org.akadia.itemraffle.gui.PoolViewerMenu;
+import org.akadia.itemraffle.guis.DepositoryHistoryCommonMenu;
+import org.akadia.itemraffle.guis.DepositoryViewerCommonMenu;
+import org.akadia.itemraffle.guis.PoolViewerMenu;
 import org.akadia.itemraffle.utils.RandomUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,10 +25,7 @@ import java.util.logging.Level;
 
 public class ItemRafflePool {
 
-    private final DepositoryViewerCommonMenu depositoryViewerCommonMenu;
-
-
-
+    private DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private final DepositoryHistoryCommonMenu depositoryHistoryCommonMenu;
     private final Map<String, PoolViewerMenu> poolViewerMenus;
     private final ItemRaffleDepository itemRaffleDepository;
@@ -39,15 +36,16 @@ public class ItemRafflePool {
     public ItemRafflePool(ItemRaffleMain main, ItemRaffleDepository itemRaffleDepository) {
         this.main = main;
         this.itemRaffleDepository = itemRaffleDepository;
-        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository);
+        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository, this);
         this.depositoryHistoryCommonMenu = new DepositoryHistoryCommonMenu(main, this);
         this.poolViewerMenus = new HashMap<>();
 
         if (itemRaffleDepository.getNextDrawingTime() == -1L) {
             this.setNextDrawingTime();
         }
-
+        setState(PoolState.RUNNING);
     }
+
     public DepositoryHistoryCommonMenu getDepositoryHistoryCommonMenu() {
         return depositoryHistoryCommonMenu;
     }
@@ -76,12 +74,22 @@ public class ItemRafflePool {
         return (itemRaffleDepository.getNextDrawingTime() - System.currentTimeMillis()) / 1000L;
     }
 
-    public void run() {
+    public void refreshView() {
+        this.depositoryViewerCommonMenu.getGui().destroy();
+        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository, this);
+    }
 
+    public void run() {
         // 暂停状态
         if (!this.validateDepository()) {
-            this.setState(PoolState.STOPPED);
+            this.setState(PoolState.ERROR);
             this.main.getLogger().log(Level.WARNING, "物品抽奖仓库设置错误, 抽奖池处于无效状态...");
+            return;
+        }
+
+        if (this.getState().equals(PoolState.BLOCKED)) {
+            this.main.getLogger().log(Level.INFO, "物品抽奖仓库暂停中...");
+
             return;
         }
 
@@ -95,11 +103,9 @@ public class ItemRafflePool {
                 return;
             }
             ItemRaffleWinnerInfo winnerInfo = calculateFinalAwardWinner();
+            this.refreshView();
             this.getItemRaffleDepository().getHistory().add(winnerInfo);
             this.main.getDepositoryConfiguration().saveDepository(this.getItemRaffleDepository());
-            // 可以开奖了
-//            this.saveHistoryRecord(calculateFinalAwardWinner()); // 计算最终获奖者保存此次抽奖池到历史记录
-//            this.next(); // 开始下一次抽奖池
             return;
         }
     }
@@ -119,7 +125,6 @@ public class ItemRafflePool {
     }
 
     /**
-     *
      * @return validate if the timer ready to draw a winner
      */
     public boolean isDrawingTimeNow() {
@@ -208,7 +213,7 @@ public class ItemRafflePool {
 
         ItemRaffleEntryInfo winnerEntry;
         BigDecimal totalPoolDeposit = getTotalPoolDeposit();
-
+        ItemStack prize = this.getSelectedItemStack();
         if (totalEntry > 1) {
             List<ItemRaffleEntryInfo> list = new ArrayList<>();
             for (Map.Entry<String, String> playerDeposit : itemRaffleDepository.getPlayerDepositMap().entrySet()) {
@@ -235,7 +240,7 @@ public class ItemRafflePool {
                 String.valueOf(totalEntry),
                 winnerEntry.getDeposit(),
                 this.calculateChanceToString(totalPoolDeposit, winnerEntry.getDeposit()),
-                this.getSelectedItemStack());
+                prize);
         // 发送全服消息通知本次获奖者
 //        sendAwardWinnerMessage(total, winnerInfo, awardItem);
         // 给获奖者执行自定义命令
@@ -258,13 +263,13 @@ public class ItemRafflePool {
                 this.incrementSelectIndex();
         }
         this.setNextDrawingTime();
-
+        this.getItemRaffleDepository().getPlayerDepositMap().clear();
         // 将抽奖池的物品发送给玩家
         this.main.getBoxManager().addItemToBox(winnerInfo.getUsername(), winnerInfo.getAwardedPrize());
-            // 如果奖励物品发送成功则获取玩家如果在线则提示
-            Player player = Bukkit.getServer().getPlayer(winnerInfo.getUsername());
-            if (player != null)
-                player.sendMessage("You won a prize!");
+        // 如果奖励物品发送成功则获取玩家如果在线则提示
+        Player player = Bukkit.getServer().getPlayer(winnerInfo.getUsername());
+        if (player != null)
+            player.sendMessage("You won a prize!");
         return winnerInfo;
     }
 

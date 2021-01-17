@@ -1,27 +1,24 @@
-package org.akadia.itemraffle.gui;
+package org.akadia.itemraffle.guis;
 
 import de.themoep.inventorygui.InventoryGui;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class BaseMenu {
+public abstract class BaseCommonMenu implements InventoryHolder {
     private final ItemRaffleMain main;
     private final InventoryGui gui;
-    private final InventoryHolder holder;
 
-    BaseMenu(ItemRaffleMain main, InventoryHolder holder, String name) {
+    BaseCommonMenu(ItemRaffleMain main, String name) {
         this.main = main;
-
-        this.gui = new InventoryGui(main, holder, name, getSetup());
-        this.holder = holder;
+        this.gui = new InventoryGui(main, this, name, getSetup());
     }
 
-    BaseMenu(ItemRaffleMain main, InventoryHolder holder) {
+    BaseCommonMenu(ItemRaffleMain main) {
         this.main = main;
-
-        this.gui = new InventoryGui(main, holder, getName(), getSetup());
-        this.holder = holder;
+        this.gui = new InventoryGui(main, this, getName(), getSetup());
     }
 
     public ItemRaffleMain getMain() {
@@ -32,15 +29,16 @@ public abstract class BaseMenu {
         return gui;
     }
 
-    public InventoryHolder getHolder() {
-        return holder;
-    }
-
     public void open(HumanEntity player) {
-        this.gui.show(player);
+        gui.show(player);
     }
 
     abstract String[] getSetup();
 
     abstract String getName();
+
+    @Override
+    public @NotNull Inventory getInventory() {
+        return null;
+    }
 }

@@ -3,7 +3,7 @@ package org.akadia.itemraffle.managers;
 import de.themoep.inventorygui.InventoryGui;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
-import org.akadia.itemraffle.gui.DepositoryListCommonMenu;
+import org.akadia.itemraffle.guis.DepositoryListCommonMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

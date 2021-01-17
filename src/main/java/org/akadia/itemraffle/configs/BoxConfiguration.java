@@ -64,6 +64,19 @@ public class BoxConfiguration extends Configuration {
         this.saveBox(player.getName());
     }
 
+    public void claimAll(Player player) {
+        List<ItemStack> itemStacks = this.boxes.get(player.getName());
+        for (ItemStack item : itemStacks) {
+            if (player.getInventory().firstEmpty() != -1) {
+                player.getInventory().addItem(item);
+            } else {
+                player.getWorld().dropItem(player.getLocation(), item);
+            }
+        }
+        this.boxes.clear();
+        this.saveBox(player.getName());
+    }
+
     public void saveBox(String player) {
         List<ItemStack> list = this.boxes.get(player);
         this.setValue(SerializeUtil.itemStackArrayToBase64(ItemStackUtil.listToArray(list)), "boxes", player);
