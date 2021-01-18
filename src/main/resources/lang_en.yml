@@ -1,0 +1,8 @@
+msg:
+
+gui:
+  listMenuTitle: "Viewing Pools"
+  boxMenuTitle: "{0}'s Box"
+  historyMenuTitle: "{0}'s Past Winners"
+  depositoryMenuTitle: "{0} Item Depository (Admin)"
+  poolMenuTitle: "{0} #{1} Raffle"

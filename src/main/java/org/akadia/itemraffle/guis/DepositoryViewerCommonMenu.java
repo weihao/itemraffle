@@ -7,18 +7,18 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.enums.PoolState;
 import org.akadia.itemraffle.utils.InventoryUtil;
 import org.akadia.itemraffle.utils.ItemStackUtil;
+import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class DepositoryViewerCommonMenu extends BaseCommonMenu {
 
-    private final ItemRaffleDepository itemRaffleDepository;
     private final ItemRafflePool itemRafflePool;
-    public DepositoryViewerCommonMenu(ItemRaffleMain main, ItemRaffleDepository depository, ItemRafflePool itemRafflePool) {
-        super(main, depository.getName());
-        this.itemRaffleDepository = depository;
+    public DepositoryViewerCommonMenu(ItemRaffleMain main, ItemRafflePool itemRafflePool) {
+        super(main, LangUtil.getDepositoryMenuName(main, itemRafflePool));
         this.itemRafflePool = itemRafflePool;
+        ItemRaffleDepository depository = itemRafflePool.getItemRaffleDepository();
 
         Inventory inv = Bukkit.createInventory(null, 54, depository.getName());
         for (ItemStack prize : depository.getPrizes()) {
@@ -48,12 +48,4 @@ public class DepositoryViewerCommonMenu extends BaseCommonMenu {
                 "iiiiiiiii"
         };
     }
-
-    @Override
-    String getName() {
-        return this.itemRaffleDepository.getName() + ": " +
-                "item raffle is using item from slot " + this.itemRaffleDepository.getItemSelectIndex();
-    }
-
-
 }

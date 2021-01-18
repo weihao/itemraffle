@@ -8,6 +8,7 @@ import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
+import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
     public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
-        super(main);
+        super(main, LangUtil.getHistoryMenuName(main, pool));
 
         GuiElementGroup group = new GuiElementGroup('i');
 
@@ -46,11 +47,4 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
                 "p       n",
         };
     }
-
-    @Override
-    String getName() {
-        return "History";
-    }
-
-
 }

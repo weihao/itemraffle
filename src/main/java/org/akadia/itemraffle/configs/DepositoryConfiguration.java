@@ -129,6 +129,6 @@ public class DepositoryConfiguration extends Configuration {
 
     @Override
     public String getConfigName() {
-        return "config.yml";
+        return "depository.yml";
     }
 }

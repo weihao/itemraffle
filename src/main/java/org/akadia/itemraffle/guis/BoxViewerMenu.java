@@ -6,6 +6,7 @@ import de.themoep.inventorygui.GuiPageElement;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.configs.BoxConfiguration;
+import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,8 @@ public class BoxViewerMenu extends BaseMenu {
 
 
     public BoxViewerMenu(ItemRaffleMain main, HumanEntity player) {
-        super(main, player, player.getName());
+        super(main, player, LangUtil.getBoxMenuName(main, player));
+
         BoxConfiguration boxManager = this.getMain().getBoxManager();
         List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());
 
@@ -26,8 +28,8 @@ public class BoxViewerMenu extends BaseMenu {
 
         for (int i = 0; i < itemStacks.size(); i++) {
             StaticGuiElement s = new StaticGuiElement('i', itemStacks.get(i), click -> {
-                boxManager.claimAll((Player) player);
                 group.clearElements();
+                boxManager.claimAll((Player) player);
                 return true;
             });
             group.addElement(s);
@@ -51,11 +53,4 @@ public class BoxViewerMenu extends BaseMenu {
                 "p       n"
         };
     }
-
-    @Override
-    String getName() {
-        return "";
-    }
-
-
 }

@@ -73,7 +73,7 @@ public class BoxConfiguration extends Configuration {
                 player.getWorld().dropItem(player.getLocation(), item);
             }
         }
-        this.boxes.clear();
+        this.boxes.get(player.getName()).clear();
         this.saveBox(player.getName());
     }
 

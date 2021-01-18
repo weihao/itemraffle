@@ -36,7 +36,7 @@ public class ItemRafflePool {
     public ItemRafflePool(ItemRaffleMain main, ItemRaffleDepository itemRaffleDepository) {
         this.main = main;
         this.itemRaffleDepository = itemRaffleDepository;
-        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository, this);
+        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, this);
         this.depositoryHistoryCommonMenu = new DepositoryHistoryCommonMenu(main, this);
         this.poolViewerMenus = new HashMap<>();
 
@@ -76,7 +76,7 @@ public class ItemRafflePool {
 
     public void refreshView() {
         this.depositoryViewerCommonMenu.getGui().destroy();
-        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, itemRaffleDepository, this);
+        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, this);
     }
 
     public void run() {
@@ -233,7 +233,7 @@ public class ItemRafflePool {
             return null;
         }
         ItemRaffleWinnerInfo winnerInfo = new ItemRaffleWinnerInfo(
-                String.valueOf(itemRaffleDepository.getHistory().size() + 1),
+                String.valueOf(this.getRaffleId()),
                 winnerEntry.getUsername(),
                 itemRaffleDepository.getNextDrawingTime(),
                 this.getTotalPoolDeposit().toPlainString(),
@@ -335,6 +335,10 @@ public class ItemRafflePool {
 
     public boolean isEmpty() {
         return this.getItemRaffleDepository().getPrizes().size() <= 0;
+    }
+
+    public int getRaffleId(){
+        return itemRaffleDepository.getHistory().size() + 1;
     }
 
 }

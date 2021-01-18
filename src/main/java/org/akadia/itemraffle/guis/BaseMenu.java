@@ -10,17 +10,10 @@ public abstract class BaseMenu {
     private final InventoryGui gui;
     private final InventoryHolder holder;
 
-    BaseMenu(ItemRaffleMain main, InventoryHolder holder, String name) {
+    public BaseMenu(ItemRaffleMain main, InventoryHolder holder, String name) {
         this.main = main;
 
         this.gui = new InventoryGui(main, holder, name, getSetup());
-        this.holder = holder;
-    }
-
-    BaseMenu(ItemRaffleMain main, InventoryHolder holder) {
-        this.main = main;
-
-        this.gui = new InventoryGui(main, holder, getName(), getSetup());
         this.holder = holder;
     }
 
@@ -41,6 +34,4 @@ public abstract class BaseMenu {
     }
 
     abstract String[] getSetup();
-
-    abstract String getName();
 }

@@ -16,11 +16,6 @@ public abstract class BaseCommonMenu implements InventoryHolder {
         this.gui = new InventoryGui(main, this, name, getSetup());
     }
 
-    BaseCommonMenu(ItemRaffleMain main) {
-        this.main = main;
-        this.gui = new InventoryGui(main, this, getName(), getSetup());
-    }
-
     public ItemRaffleMain getMain() {
         return main;
     }
@@ -34,8 +29,6 @@ public abstract class BaseCommonMenu implements InventoryHolder {
     }
 
     abstract String[] getSetup();
-
-    abstract String getName();
 
     @Override
     public @NotNull Inventory getInventory() {

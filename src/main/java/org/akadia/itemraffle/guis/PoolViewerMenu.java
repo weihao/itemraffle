@@ -9,6 +9,7 @@ import net.wesjd.anvilgui.AnvilGUI;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
+import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class PoolViewerMenu extends BaseMenu {
     private final ItemRafflePool pool;
 
     public PoolViewerMenu(ItemRaffleMain main, HumanEntity player, ItemRafflePool pool) {
-        super(main, player, pool.getItemRaffleDepository().getName());
+        super(main, player, LangUtil.getPoolMenuName(main, pool));
         this.pool = pool;
 
         ItemRaffleDepository depository = pool.getItemRaffleDepository();
@@ -114,11 +115,4 @@ public class PoolViewerMenu extends BaseMenu {
                 "p       n"
         };
     }
-
-    @Override
-    String getName() {
-        return this.pool.getItemRaffleDepository().getName();
-    }
-
-
 }

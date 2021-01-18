@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DepositoryListCommonMenu extends BaseCommonMenu {
 
     public DepositoryListCommonMenu(ItemRaffleMain main) {
-        super(main);
+        super(main, main.getLocale("gui, listMenuTitle"));
 
         GuiElementGroup group = new GuiElementGroup('i');
 
@@ -75,11 +75,6 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                 "iiiiiiiii",
                 "p       n",
         };
-    }
-
-    @Override
-    String getName() {
-        return "Example";
     }
 
 

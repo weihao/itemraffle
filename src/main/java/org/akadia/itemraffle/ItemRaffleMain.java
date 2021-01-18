@@ -3,6 +3,8 @@ package org.akadia.itemraffle;
 import net.milkbowl.vault.economy.Economy;
 import org.akadia.itemraffle.configs.BoxConfiguration;
 import org.akadia.itemraffle.configs.DepositoryConfiguration;
+import org.akadia.itemraffle.configs.LanguageConfiguration;
+import org.akadia.itemraffle.configs.PluginConfiguration;
 import org.akadia.itemraffle.managers.CommandManager;
 import org.akadia.itemraffle.managers.ConfigFileManager;
 import org.akadia.itemraffle.managers.GUIManager;
@@ -21,7 +23,10 @@ public class ItemRaffleMain extends JavaPlugin {
     private ItemRaffleManager itemRaffleManager;
     private ConfigFileManager configFileManager;
 
+    private PluginConfiguration pluginConfiguration;
 
+
+    private LanguageConfiguration languageConfiguration;
     private DepositoryConfiguration depositoryConfiguration;
     private BoxConfiguration boxConfiguration;
 
@@ -63,14 +68,26 @@ public class ItemRaffleMain extends JavaPlugin {
         return boxConfiguration;
     }
 
+    public PluginConfiguration getPluginConfiguration() {
+        return pluginConfiguration;
+    }
+
+    public BoxConfiguration getBoxConfiguration() {
+        return boxConfiguration;
+    }
+
+    public LanguageConfiguration getLanguageConfiguration() {
+        return languageConfiguration;
+    }
+
     @Override
     public void onEnable() {
         itemRaffleMain = this;
         getLogger().info("Template plugin is loaded.");
 
-
         // Config must be initialized first.
         this.configFileManager = new ConfigFileManager(this);
+        this.pluginConfiguration = new PluginConfiguration(this);
         this.depositoryConfiguration = new DepositoryConfiguration(this);
         this.boxConfiguration = new BoxConfiguration(this);
 
@@ -103,6 +120,10 @@ public class ItemRaffleMain extends JavaPlugin {
     public void onDisable() {
         depositoryConfiguration.onDisable();
         boxConfiguration.onDisable();
+    }
+
+    public String getLocale(String... nodes){
+        return this.getLanguageConfiguration().getLocales().get(String.join(".", nodes));
     }
 
 }
