@@ -22,7 +22,6 @@ public class ItemRaffleDepository implements Comparable<ItemRaffleDepository> {
     private String name;
     private Map<String, String> playerDepositMap;
     private List<ItemRaffleWinnerInfo> history;
-
     public ItemRaffleDepository(String key, DepositorySelection depositorySelection, DepositoryMode depositoryMode, int itemSelectIndex, int drawingInterval, long nextDrawingTime, ItemStack icon, List<ItemStack> prizes, String name, Map<String, String> playerDepositMap, List<ItemRaffleWinnerInfo> history) {
         this.key = key;
         this.depositorySelection = depositorySelection;
@@ -41,12 +40,24 @@ public class ItemRaffleDepository implements Comparable<ItemRaffleDepository> {
         return key;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public List<ItemRaffleWinnerInfo> getHistory() {
         return history;
     }
 
+    public void setHistory(List<ItemRaffleWinnerInfo> history) {
+        this.history = history;
+    }
+
     public Map<String, String> getPlayerDepositMap() {
         return playerDepositMap;
+    }
+
+    public void setPlayerDepositMap(Map<String, String> playerDepositMap) {
+        this.playerDepositMap = playerDepositMap;
     }
 
     public String getName() {

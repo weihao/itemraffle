@@ -1,5 +1,6 @@
 msg:
   notEnoughMoney: "You do not have enough money."
+  playerWinningMessage: "Congratulations, You won a ${0} item from the pool ${1} with a chance of {2}%."
 
 
 gui:
@@ -13,3 +14,4 @@ gui:
 
 log:
   failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"
+  failedCalculateWinner: "Failed to calculate a winner for depository {0}"

@@ -8,7 +8,6 @@ import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
-import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
