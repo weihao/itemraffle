@@ -11,13 +11,12 @@ import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
     public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
-        super(main, MessageFormat.format(main.getLocale("gui", "historyMenuTitle"), pool.getItemRaffleDepository().getName()));
+        super(main, main.getLocale("gui", "historyMenuTitle", pool.getItemRaffleDepository().getName()));
 
         GuiElementGroup group = new GuiElementGroup('i');
 

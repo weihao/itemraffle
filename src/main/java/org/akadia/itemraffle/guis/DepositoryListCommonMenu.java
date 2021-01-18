@@ -26,33 +26,31 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
             ItemRaffleDepository depository = pool.getItemRaffleDepository();
             DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i',
                     (viewer) -> {
-                        if (pool.validateDepository()) {
-                            return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
-                                if (click.getType().isRightClick() && click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                        return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
+                            if (click.getType().isRightClick()) {
+                                if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
                                     pool.setState(PoolState.BLOCKED);
+                                    pool.getDepositoryCommonMenu().open(viewer);
+                                } else {
                                     pool.getDepositoryViewerCommonMenu().open(viewer);
-                                    return true;
                                 }
-
+                                return true;
+                            }
+                            if (pool.validateDepository()) {
                                 PoolViewerMenu poolViewerMenu = new PoolViewerMenu(main, viewer, pool);
                                 pool.getPoolViewerMenus().put(viewer.getName(), poolViewerMenu);
                                 poolViewerMenu.open(viewer);
-                                return true;
-                            }, depository.getName(),
-                                    depository.getDepositoryMode() + "",
-                                    depository.getDepositorySelection() + "",
-                                    depository.getDrawingInterval() + "",
-                                    depository.getNextDrawingTime() + "",
-                                    pool.getRemainingNextDrawTime() + "");
-                        } else {
-                            return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
-                                if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
-                                    pool.setState(PoolState.BLOCKED);
-                                    pool.getDepositoryViewerCommonMenu().open(viewer);
-                                }
-                                return true;
-                            }, "DISABLED", "DISABLED");
-                        }
+                            }
+
+                            return true;
+                        },
+                                this.getMain().getLocale("gui.depositoryName", depository.getName()),
+                                this.getMain().getLocale("gui.depositoryMode", depository.getDepositoryMode()),
+                                this.getMain().getLocale("gui.depositorySelection", depository.getDepositorySelection()),
+                                this.getMain().getLocale("gui.drawingInterval", depository.getDrawingInterval()),
+                                this.getMain().getLocale("gui.nextDrawingTime", depository.getNextDrawingTime()),
+                                this.getMain().getLocale("gui.remainingNextDrawTime", pool.getRemainingNextDrawTime())
+                        );
                     });
 
             group.addElement(dynamicGuiElement);

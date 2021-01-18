@@ -15,18 +15,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class PoolViewerMenu extends BaseMenu {
 
-    private final ItemRafflePool pool;
 
     public PoolViewerMenu(ItemRaffleMain main, HumanEntity player, ItemRafflePool pool) {
-        super(main, player, MessageFormat.format(main.getLocale("gui", "poolMenuTitle"), pool.getItemRaffleDepository().getName(), pool.getRaffleId()));
-        this.pool = pool;
+        super(main, player,
+                main.getLocale("gui.poolMenuTitle",
+                        pool.getItemRaffleDepository().getName(),
+                        pool.getRaffleId()));
 
         ItemRaffleDepository depository = pool.getItemRaffleDepository();
         if (!pool.validateDepository()) {
@@ -42,7 +42,7 @@ public class PoolViewerMenu extends BaseMenu {
 
         })); // icon
         this.getGui().addElement(new StaticGuiElement('h', new ItemStack(Material.BOOK), 1, click -> {
-            this.pool.getDepositoryHistoryCommonMenu().open(player);
+            pool.getDepositoryHistoryCommonMenu().open(player);
             return true;
         }));
 
@@ -52,18 +52,19 @@ public class PoolViewerMenu extends BaseMenu {
                     .Builder()
                     .onComplete((pl, text) -> {
                         try {
-                            double v = Double.parseDouble(text);// test if double
+                            double v = Double.parseDouble(text);
                             if (v <= 0) {
-                                return AnvilGUI.Response.text("Cannot be negative!");
+                                return AnvilGUI.Response.text(this.getMain().getLocale("gui.errorNegativeOrZero"));
                             }
                             if (!pool.playerDeposit(pl, text)) {
-                                return AnvilGUI.Response.text("Not enough money!");
+                                return AnvilGUI.Response.text(this.getMain().getLocale("gui.errorNotEnoughMoney"));
                             }
+
                             getMain().getDepositoryConfiguration().saveDepository(depository);
 
                             return AnvilGUI.Response.close();
                         } catch (NumberFormatException e) {
-                            return AnvilGUI.Response.text("Not a number!");
+                            return AnvilGUI.Response.text(this.getMain().getLocale("gui.errorNotANumber"));
                         }
                     })
                     .onClose(pl -> {
@@ -80,7 +81,7 @@ public class PoolViewerMenu extends BaseMenu {
 
                         click.getGui().show(pl);
                     })
-                    .title("Depositing to " + pool.getItemRaffleDepository().getName())
+                    .title(getMain().getLocale("gui.depositing", pool.getItemRaffleDepository().getName()))
                     .text("0")
                     .plugin(main)
                     .open((Player) player);

@@ -22,6 +22,7 @@ public class ItemRaffleDepository implements Comparable<ItemRaffleDepository> {
     private String name;
     private Map<String, String> playerDepositMap;
     private List<ItemRaffleWinnerInfo> history;
+
     public ItemRaffleDepository(String key, DepositorySelection depositorySelection, DepositoryMode depositoryMode, int itemSelectIndex, int drawingInterval, long nextDrawingTime, ItemStack icon, List<ItemStack> prizes, String name, Map<String, String> playerDepositMap, List<ItemRaffleWinnerInfo> history) {
         this.key = key;
         this.depositorySelection = depositorySelection;

@@ -8,10 +8,26 @@ gui:
   boxMenuTitle: "{0}'s Box"
   historyMenuTitle: "{0}'s Past Winners"
   depositoryMenuTitle: "[Admin] {0} Depository"
+  depositoryViewerMenuTitle: "[User] {0} Depository"
   poolMenuTitle: "{0} #{1} Raffle"
   nextPage: "Go to previous page (%prevpage%)"
   prevPage: "Go to next page (%nextpage%)"
-
+  depositoryName: "{0}"
+  depositoryMode: "Mode: {0}"
+  depositorySelection: "Selection: {0}"
+  drawingInterval: "Frequency: {0}"
+  nextDrawingTime: "Drawing Time: {0}"
+  remainingNextDrawTime: "Drawing in: {0}"
+  errorNegativeOrZero: "Cannot Be Negative or Zero!"
+  errorNotEnoughMoney: "Not Enough Money!"
+  errorNotANumber: "Not a Number!"
+  depositing: "Depositing to {0}"
 log:
   failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"
   failedCalculateWinner: "Failed to calculate a winner for depository {0}"
+
+enums:
+  cycle: "Same item can be repeatedly drawn"
+  drain: "Depository removes item if drawn"
+  sequential: "Next prize is incrementally selected"
+  random: "Next prize is randomly selected"

@@ -5,6 +5,7 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.data.ItemRaffleEntryInfo;
 import org.akadia.itemraffle.data.ItemRaffleWinnerInfo;
 import org.akadia.itemraffle.enums.PoolState;
+import org.akadia.itemraffle.guis.DepositoryCommonMenu;
 import org.akadia.itemraffle.guis.DepositoryHistoryCommonMenu;
 import org.akadia.itemraffle.guis.DepositoryViewerCommonMenu;
 import org.akadia.itemraffle.guis.PoolViewerMenu;
@@ -16,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import javax.management.openmbean.OpenDataException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,25 +26,18 @@ import java.util.logging.Level;
 
 public class ItemRafflePool {
 
-    public ItemRaffleMain getMain() {
-        return main;
-    }
-
-    public void setDepositoryViewerCommonMenu(DepositoryViewerCommonMenu depositoryViewerCommonMenu) {
-        this.depositoryViewerCommonMenu = depositoryViewerCommonMenu;
-    }
-
     private final DepositoryHistoryCommonMenu depositoryHistoryCommonMenu;
     private final Map<String, PoolViewerMenu> poolViewerMenus;
     private final ItemRaffleDepository itemRaffleDepository;
     private final ItemRaffleMain main;
+    private DepositoryCommonMenu depositoryCommonMenu;
     private DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private PoolState state;
-
 
     public ItemRafflePool(ItemRaffleMain main, ItemRaffleDepository itemRaffleDepository) {
         this.main = main;
         this.itemRaffleDepository = itemRaffleDepository;
+        this.depositoryCommonMenu = new DepositoryCommonMenu(main, this);
         this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, this);
         this.depositoryHistoryCommonMenu = new DepositoryHistoryCommonMenu(main, this);
         this.poolViewerMenus = new HashMap<>();
@@ -55,12 +48,24 @@ public class ItemRafflePool {
         setState(PoolState.RUNNING);
     }
 
-    public DepositoryHistoryCommonMenu getDepositoryHistoryCommonMenu() {
-        return depositoryHistoryCommonMenu;
+    public ItemRaffleMain getMain() {
+        return main;
     }
 
     public DepositoryViewerCommonMenu getDepositoryViewerCommonMenu() {
         return depositoryViewerCommonMenu;
+    }
+
+    public void setDepositoryViewerCommonMenu(DepositoryCommonMenu depositoryCommonMenu) {
+        this.depositoryCommonMenu = depositoryCommonMenu;
+    }
+
+    public DepositoryHistoryCommonMenu getDepositoryHistoryCommonMenu() {
+        return depositoryHistoryCommonMenu;
+    }
+
+    public DepositoryCommonMenu getDepositoryCommonMenu() {
+        return depositoryCommonMenu;
     }
 
     public Map<String, PoolViewerMenu> getPoolViewerMenus() {
@@ -84,8 +89,8 @@ public class ItemRafflePool {
     }
 
     public void refreshView() {
-        this.depositoryViewerCommonMenu.getGui().destroy();
-        this.depositoryViewerCommonMenu = new DepositoryViewerCommonMenu(main, this);
+        this.depositoryCommonMenu.getGui().destroy();
+        this.depositoryCommonMenu = new DepositoryCommonMenu(main, this);
     }
 
     public void run() {
@@ -176,7 +181,7 @@ public class ItemRafflePool {
                 throw new OpenDataException(response != null ? response.errorMessage : "null");
 
         } catch (Exception e) {
-            this.getMain().getLogger().log(Level.SEVERE, MessageFormat.format(main.getLocale("log.failedDepositDeduction"), player.getName(), e));
+            this.getMain().getLogger().log(Level.SEVERE, main.getLocale("log.failedDepositDeduction", player.getName(), e));
             return null;
         }
         return bigDecimal;
@@ -230,8 +235,8 @@ public class ItemRafflePool {
 
         if (winnerEntry == null) {
             this.getMain().getLogger().log(Level.SEVERE,
-                    MessageFormat.format(this.getMain().getLocale("log.failedCalculateWinner"),
-                            this.getItemRaffleDepository().getName()));
+                    this.getMain().getLocale("log.failedCalculateWinner"),
+                    this.getItemRaffleDepository().getName());
             return null;
         }
         ItemRaffleWinnerInfo winner = new ItemRaffleWinnerInfo(
@@ -267,7 +272,7 @@ public class ItemRafflePool {
         Player player = Bukkit.getServer().getPlayer(winner.getUsername());
         if (player != null)
             player.sendMessage(
-                    MessageFormat.format(getMain().getLocale("msg.playerWinningMessage"),
+                    getMain().getLocale("msg.playerWinningMessage",
                             winner.getTotalPoolValue(),
                             this.getItemRaffleDepository().getName(),
                             winner.getChance()));

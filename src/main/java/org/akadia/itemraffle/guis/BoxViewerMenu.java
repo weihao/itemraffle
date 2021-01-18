@@ -10,7 +10,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class BoxViewerMenu extends BaseMenu {
 
 
     public BoxViewerMenu(ItemRaffleMain main, HumanEntity player) {
-        super(main, player, MessageFormat.format(main.getLocale("gui", "boxMenuTitle"), player.getName()));
+        super(main, player, main.getLocale("gui", "boxMenuTitle", player.getName()));
 
         BoxConfiguration boxManager = this.getMain().getBoxManager();
         List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());

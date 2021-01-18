@@ -1,16 +1,8 @@
 package org.akadia.itemraffle.data;
 
 public class ItemRaffleEntryInfo {
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setDeposit(String deposit) {
-        this.deposit = deposit;
-    }
-
-    private  String username;
-    private  String deposit;
+    private String username;
+    private String deposit;
 
     public ItemRaffleEntryInfo(String username, String deposit) {
         this.username = username;
@@ -21,8 +13,16 @@ public class ItemRaffleEntryInfo {
         return deposit;
     }
 
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.text.MessageFormat;
 import java.util.logging.Level;
 
 public class ItemRaffleMain extends JavaPlugin {
@@ -122,8 +123,8 @@ public class ItemRaffleMain extends JavaPlugin {
         boxConfiguration.onDisable();
     }
 
-    public String getLocale(String... nodes) {
-        return this.getLanguageConfiguration().getLocales().get(String.join(".", nodes));
+    public String getLocale(String key, Object... arguments) {
+        return MessageFormat.format(this.getLanguageConfiguration().getLocales().get(key), arguments);
     }
 
 }
