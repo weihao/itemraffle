@@ -83,11 +83,11 @@ public class ItemRaffleMain extends JavaPlugin {
     @Override
     public void onEnable() {
         itemRaffleMain = this;
-        getLogger().info("Template plugin is loaded.");
 
         // Config must be initialized first.
         this.configFileManager = new ConfigFileManager(this);
         this.pluginConfiguration = new PluginConfiguration(this);
+        this.languageConfiguration = new LanguageConfiguration(this);
         this.depositoryConfiguration = new DepositoryConfiguration(this);
         this.boxConfiguration = new BoxConfiguration(this);
 
@@ -122,7 +122,7 @@ public class ItemRaffleMain extends JavaPlugin {
         boxConfiguration.onDisable();
     }
 
-    public String getLocale(String... nodes){
+    public String getLocale(String... nodes) {
         return this.getLanguageConfiguration().getLocales().get(String.join(".", nodes));
     }
 

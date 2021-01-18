@@ -1,8 +1,15 @@
 msg:
+  notEnoughMoney: "You do not have enough money."
+
 
 gui:
   listMenuTitle: "Viewing Pools"
   boxMenuTitle: "{0}'s Box"
   historyMenuTitle: "{0}'s Past Winners"
-  depositoryMenuTitle: "{0} Item Depository (Admin)"
+  depositoryMenuTitle: "[Admin] {0} Depository"
   poolMenuTitle: "{0} #{1} Raffle"
+  nextPage: "Go to previous page (%prevpage%)"
+  prevPage: "Go to next page (%nextpage%)"
+
+log:
+  failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"

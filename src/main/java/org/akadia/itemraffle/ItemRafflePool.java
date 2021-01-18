@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import javax.management.openmbean.OpenDataException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,11 @@ import java.util.logging.Level;
 
 public class ItemRafflePool {
 
-    private DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private final DepositoryHistoryCommonMenu depositoryHistoryCommonMenu;
     private final Map<String, PoolViewerMenu> poolViewerMenus;
     private final ItemRaffleDepository itemRaffleDepository;
     private final ItemRaffleMain main;
+    private DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private PoolState state;
 
 
@@ -83,22 +84,21 @@ public class ItemRafflePool {
         // 暂停状态
         if (!this.validateDepository()) {
             this.setState(PoolState.ERROR);
-            this.main.getLogger().log(Level.WARNING, "物品抽奖仓库设置错误, 抽奖池处于无效状态...");
+//            this.main.getLogger().log(Level.WARNING, "物品抽奖仓库设置错误, 抽奖池处于无效状态...");
             return;
         }
 
         if (this.getState().equals(PoolState.BLOCKED)) {
-            this.main.getLogger().log(Level.INFO, "物品抽奖仓库暂停中...");
+//            this.main.getLogger().log(Level.INFO, "物品抽奖仓库暂停中...");
 
             return;
         }
 
-        this.main.getLogger().log(Level.INFO, "抽奖池开始正常工作, 距离此次开奖剩余 {0} 秒...", getRemainingNextDrawTime());
+//        this.main.getLogger().log(Level.INFO, "抽奖池开始正常工作, 距离此次开奖剩余 {0} 秒...", getRemainingNextDrawTime());
         this.setState(PoolState.RUNNING);
 
         if (this.isDrawingTimeNow()) {
             if (!validateDrawCondition()) {
-                this.main.getLogger().log(Level.INFO, "此次抽奖池未达到开奖条件, 开始下一轮抽奖...");
                 this.setNextDrawingTime();
                 return;
             }
@@ -106,7 +106,6 @@ public class ItemRafflePool {
             this.refreshView();
             this.getItemRaffleDepository().getHistory().add(winnerInfo);
             this.main.getDepositoryConfiguration().saveDepository(this.getItemRaffleDepository());
-            return;
         }
     }
 
@@ -136,19 +135,16 @@ public class ItemRafflePool {
     }
 
     private BigDecimal handleBigDecimal(BigDecimal bigDecimal) {
-        // 处理 BigDecimal 的小数保留位数以及四舍五入
         if (bigDecimal == null) bigDecimal = new BigDecimal(0d);
         return bigDecimal.setScale(2, RoundingMode.HALF_UP);
     }
 
     public boolean playerDeposit(Player player, String deposit) {
-        // 将指定玩家的金钱数据掷入到当前抽奖池
         BigDecimal bigDecimal = deductPlayerEco(player, handleBigDecimal(new BigDecimal(deposit)));
         return bigDecimal != null && playerDeposit(player.getName(), bigDecimal);
     }
 
     private boolean playerDeposit(String username, BigDecimal deposit) {
-        // 将指定玩家的金钱数据掷入到当前抽奖池
         String cache = itemRaffleDepository.getPlayerDepositMap().get(username);
         if (cache == null) {
             itemRaffleDepository.getPlayerDepositMap().put(username, deposit.toPlainString());
@@ -161,20 +157,18 @@ public class ItemRafflePool {
 
 
     private BigDecimal deductPlayerEco(Player player, BigDecimal bigDecimal) {
-        // 从指定玩家经济账户减去指定经济余额
         try {
             double value = bigDecimal.doubleValue();
             if (!this.main.getEconomy().has(player, value)) {
-                // 玩家没有足够的金钱则提示并返回 null
-                player.sendMessage("玩家没有足够的金钱");
+                player.sendMessage(this.main.getLocale("msg.notEnoughMoney"));
                 return null;
             }
             EconomyResponse response = this.main.getEconomy().withdrawPlayer(player, value);
-            if (response == null || !response.transactionSuccess()) // 处理玩家经济时结果为 null 或没有成功则抛出异常
+            if (response == null || !response.transactionSuccess())
                 throw new OpenDataException(response != null ? response.errorMessage : "null");
 
         } catch (Exception e) {
-            this.main.getLogger().log(Level.SEVERE, "错误: 从玩家 '" + player.getName() + "' 的经济账户减少金钱时未成功, 异常信息:", e);
+            this.main.getLogger().log(Level.SEVERE, MessageFormat.format(main.getLocale("log.failedDepositDeduction"), player.getName(), e));
             return null;
         }
         return bigDecimal;
@@ -337,7 +331,7 @@ public class ItemRafflePool {
         return this.getItemRaffleDepository().getPrizes().size() <= 0;
     }
 
-    public int getRaffleId(){
+    public int getRaffleId() {
         return itemRaffleDepository.getHistory().size() + 1;
     }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class DepositoryConfiguration extends Configuration {
-    private final ArrayList<ItemRaffleDepository> depositories;
+    private final List<ItemRaffleDepository> depositories;
 
     public DepositoryConfiguration(ItemRaffleMain main) {
         super(main);
@@ -41,7 +41,7 @@ public class DepositoryConfiguration extends Configuration {
             ItemStack[] prizes = SerializeUtil.itemStackArrayFromBase64(base64);
             List<ItemStack> prizesList = ItemStackUtil.arrayToList(prizes);
             Set<String> players = this.getConfigurationSection("depository", depositoryKey, "deposits");
-            HashMap<String, String> deposits = new HashMap<>();
+            Map<String, String> deposits = new HashMap<>();
             for (String player : players) {
                 deposits.put(player, this.getString("depository", depositoryKey, "deposits", player));
             }
@@ -122,7 +122,7 @@ public class DepositoryConfiguration extends Configuration {
         this.writeConfigFile();
     }
 
-    public ArrayList<ItemRaffleDepository> getDepositories() {
+    public List<ItemRaffleDepository> getDepositories() {
         return depositories;
     }
 

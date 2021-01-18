@@ -6,11 +6,11 @@ import de.themoep.inventorygui.GuiPageElement;
 import de.themoep.inventorygui.StaticGuiElement;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.configs.BoxConfiguration;
-import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class BoxViewerMenu extends BaseMenu {
 
 
     public BoxViewerMenu(ItemRaffleMain main, HumanEntity player) {
-        super(main, player, LangUtil.getBoxMenuName(main, player));
+        super(main, player, MessageFormat.format(main.getLocale("gui", "boxMenuTitle"), player.getName()));
 
         BoxConfiguration boxManager = this.getMain().getBoxManager();
         List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());
@@ -37,8 +37,8 @@ public class BoxViewerMenu extends BaseMenu {
 
         this.getGui().addElement(group);
 
-        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
-        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
+        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
+        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));
 
     }
 

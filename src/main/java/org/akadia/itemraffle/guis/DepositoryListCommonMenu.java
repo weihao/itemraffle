@@ -11,16 +11,16 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.enums.PoolState;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class DepositoryListCommonMenu extends BaseCommonMenu {
 
     public DepositoryListCommonMenu(ItemRaffleMain main) {
-        super(main, main.getLocale("gui, listMenuTitle"));
+        super(main, main.getLocale("gui.listMenuTitle"));
 
         GuiElementGroup group = new GuiElementGroup('i');
 
-        ArrayList<ItemRafflePool> pools = this.getMain().getItemRaffleManager().getPools();
+        List<ItemRafflePool> pools = this.getMain().getItemRaffleManager().getPools();
 
         for (ItemRafflePool pool : pools) {
             ItemRaffleDepository depository = pool.getItemRaffleDepository();
@@ -59,8 +59,8 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
         }
         this.getGui().addElement(group);
 
-        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
-        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
+        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
+        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));
 
     }
 

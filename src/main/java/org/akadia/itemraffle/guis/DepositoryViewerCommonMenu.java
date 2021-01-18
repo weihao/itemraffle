@@ -7,16 +7,18 @@ import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.enums.PoolState;
 import org.akadia.itemraffle.utils.InventoryUtil;
 import org.akadia.itemraffle.utils.ItemStackUtil;
-import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.MessageFormat;
+
 public class DepositoryViewerCommonMenu extends BaseCommonMenu {
 
     private final ItemRafflePool itemRafflePool;
+
     public DepositoryViewerCommonMenu(ItemRaffleMain main, ItemRafflePool itemRafflePool) {
-        super(main, LangUtil.getDepositoryMenuName(main, itemRafflePool));
+        super(main, MessageFormat.format(main.getLocale("gui", "depositoryMenuTitle"), itemRafflePool.getItemRaffleDepository().getName(), itemRafflePool.getRaffleId()));
         this.itemRafflePool = itemRafflePool;
         ItemRaffleDepository depository = itemRafflePool.getItemRaffleDepository();
 

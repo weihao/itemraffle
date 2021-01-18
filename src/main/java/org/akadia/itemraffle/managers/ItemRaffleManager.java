@@ -5,10 +5,11 @@ import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemRaffleManager {
     private final ItemRaffleMain main;
-    ArrayList<ItemRafflePool> pools;
+    List<ItemRafflePool> pools;
 
     public ItemRaffleManager(ItemRaffleMain main) {
         this.main = main;
@@ -21,7 +22,7 @@ public class ItemRaffleManager {
 
     }
 
-    public ArrayList<ItemRafflePool> getPools() {
+    public List<ItemRafflePool> getPools() {
         return pools;
     }
 

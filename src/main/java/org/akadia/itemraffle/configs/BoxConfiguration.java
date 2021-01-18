@@ -7,16 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BoxConfiguration extends Configuration {
-    public HashMap<String, List<ItemStack>> getBoxes() {
-        return boxes;
-    }
-
-    private final HashMap<String, List<ItemStack>> boxes;
+    private final Map<String, List<ItemStack>> boxes;
 
     public BoxConfiguration(ItemRaffleMain main) {
         super(main);
@@ -27,6 +23,10 @@ public class BoxConfiguration extends Configuration {
             List<ItemStack> list = ItemStackUtil.arrayToList(SerializeUtil.itemStackArrayFromBase64(base64));
             this.boxes.put(player, list);
         }
+    }
+
+    public Map<String, List<ItemStack>> getBoxes() {
+        return boxes;
     }
 
     @Override

@@ -12,12 +12,13 @@ import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
     public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
-        super(main, LangUtil.getHistoryMenuName(main, pool));
+        super(main, MessageFormat.format(main.getLocale("gui", "historyMenuTitle"), pool.getItemRaffleDepository().getName()));
 
         GuiElementGroup group = new GuiElementGroup('i');
 
@@ -30,8 +31,8 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
         this.getGui().addElement(group);
 
-        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
-        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
+        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
+        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));
 
     }
 

@@ -14,11 +14,12 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class ConfigFileManager {
-    HashMap<String, FileConfiguration> configs;
-    HashMap<String, File> files;
+    Map<String, FileConfiguration> configs;
+    Map<String, File> files;
     Logger logger;
     private Plugin plugin;
 

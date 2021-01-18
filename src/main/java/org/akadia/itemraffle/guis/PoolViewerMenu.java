@@ -9,13 +9,13 @@ import net.wesjd.anvilgui.AnvilGUI;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
-import org.akadia.itemraffle.utils.LangUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class PoolViewerMenu extends BaseMenu {
     private final ItemRafflePool pool;
 
     public PoolViewerMenu(ItemRaffleMain main, HumanEntity player, ItemRafflePool pool) {
-        super(main, player, LangUtil.getPoolMenuName(main, pool));
+        super(main, player, MessageFormat.format(main.getLocale("gui", "poolMenuTitle"), pool.getItemRaffleDepository().getName(), pool.getRaffleId()));
         this.pool = pool;
 
         ItemRaffleDepository depository = pool.getItemRaffleDepository();
@@ -99,8 +99,8 @@ public class PoolViewerMenu extends BaseMenu {
         }
         this.getGui().addElement(group);
 
-        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
-        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
+        this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
+        this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));
 
     }
 
