@@ -23,18 +23,18 @@ public class BoxViewerMenu extends BaseMenu {
         List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());
 
 
-        GuiElementGroup group = new GuiElementGroup('i');
+        GuiElementGroup itemGroup = new GuiElementGroup('i');
 
         for (int i = 0; i < itemStacks.size(); i++) {
             StaticGuiElement s = new StaticGuiElement('i', itemStacks.get(i), click -> {
-                group.clearElements();
+                itemGroup.clearElements();
                 boxManager.claimAll((Player) player);
                 return true;
             });
-            group.addElement(s);
+            itemGroup.addElement(s);
         }
 
-        this.getGui().addElement(group);
+        this.getGui().addElement(itemGroup);
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
         this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));

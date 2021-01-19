@@ -89,12 +89,17 @@
             <version>16.0.1</version>
         </dependency>
         <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>inventorygui</artifactId>
-            <!--The following version may not be the latest. Check it before using.-->
-            <version>1.4.2-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>com.github.Phoenix616</groupId>
+            <artifactId>InventoryGui</artifactId>
+            <version>85ff40a342</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>de.themoep</groupId>-->
+        <!--            <artifactId>inventorygui</artifactId>-->
+        <!--            &lt;!&ndash;The following version may not be the latest. Check it before using.&ndash;&gt;-->
+        <!--            <version>1.4.2-SNAPSHOT</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>

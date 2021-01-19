@@ -124,7 +124,12 @@ public class ItemRaffleMain extends JavaPlugin {
     }
 
     public String getLocale(String key, Object... arguments) {
-        return MessageFormat.format(this.getLanguageConfiguration().getLocales().get(key), arguments);
+        String string = this.getLanguageConfiguration().getLocales().get(key);
+        if (string == null) {
+            getLogger().severe(key + " translation key is null.");
+            return null;
+        }
+        return MessageFormat.format(string, arguments);
     }
 
 }

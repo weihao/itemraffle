@@ -1,6 +1,7 @@
 package org.akadia.itemraffle.configs;
 
 import org.akadia.itemraffle.ItemRaffleMain;
+import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class LanguageConfiguration extends Configuration {
             if (value == null) {
                 continue;
             }
-            locales.put(key, this.getConfig().getString(key));
+            locales.put(key, ChatColor.translateAlternateColorCodes('&', value));
         }
     }
 

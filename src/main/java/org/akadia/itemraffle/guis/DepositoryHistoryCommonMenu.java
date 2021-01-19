@@ -18,16 +18,21 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
     public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
         super(main, main.getLocale("gui", "historyMenuTitle", pool.getItemRaffleDepository().getName()));
 
-        GuiElementGroup group = new GuiElementGroup('i');
+        DynamicGuiElement pastWinners = new DynamicGuiElement('i', viewer -> {
+            GuiElementGroup pastWinnersGroup = new GuiElementGroup('i');
+            List<ItemRaffleWinnerInfo> history = pool.getItemRaffleDepository().getHistory();
+            for (ItemRaffleWinnerInfo winnerInfo : history) {
+                pastWinnersGroup.addElement(
+                        new StaticGuiElement('i',
+                                new ItemStack(Material.PAPER),
+                                winnerInfo.getUsername(),
+                                winnerInfo.getChance(),
+                                winnerInfo.getPlayerDepositValue()));
+            }
+            return pastWinnersGroup;
+        });
 
-        List<ItemRaffleWinnerInfo> history = pool.getItemRaffleDepository().getHistory();
-        for (ItemRaffleWinnerInfo winnerInfo : history) {
-            DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i', (viewer)
-                    -> new StaticGuiElement('i', new ItemStack(Material.PAPER), winnerInfo.getUsername(), winnerInfo.getChance(), winnerInfo.getPlayerDepositValue()));
-            group.addElement(dynamicGuiElement);
-        }
-
-        this.getGui().addElement(group);
+        this.getGui().addElement(pastWinners);
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
         this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));

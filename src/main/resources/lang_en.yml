@@ -1,6 +1,6 @@
 msg:
   notEnoughMoney: "You do not have enough money."
-  playerWinningMessage: "Congratulations, You won a ${0} item from the pool ${1} with a chance of {2}%."
+  playerWinningMessage: "Congratulations, You won a ${0} item from {1} with a chance of {2}%."
 
 
 gui:
@@ -9,11 +9,12 @@ gui:
   historyMenuTitle: "{0}'s Past Winners"
   depositoryMenuTitle: "[Admin] {0} Depository"
   depositoryViewerMenuTitle: "[User] {0} Depository"
-  poolMenuTitle: "{0} #{1} Raffle"
+  poolMenuTitle: "{0} Raffle#{1}"
   nextPage: "Go to previous page (%prevpage%)"
   prevPage: "Go to next page (%nextpage%)"
   depositoryName: "{0}"
   depositoryMode: "Mode: {0}"
+  itemSelectIndex: "Drawing Item: {0}"
   depositorySelection: "Selection: {0}"
   drawingInterval: "Frequency: {0}"
   nextDrawingTime: "Drawing Time: {0}"

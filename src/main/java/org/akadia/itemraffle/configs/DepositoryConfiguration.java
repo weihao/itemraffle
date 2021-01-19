@@ -90,7 +90,10 @@ public class DepositoryConfiguration extends Configuration {
     public void saveDepository(ItemRaffleDepository depository) {
 //       this.config.set("depository",  depository.getKey() , "depositorySelection", depository.getDepositorySelection());
 //       this.config.set("depository",  depository.getKey() , "depositoryMode", depository.getDepositoryMode());
-//       this.config.set("depository",  depository.getKey() , "itemSelectIndex", depository.getItemSelectIndex());
+        this.setValue(
+                depository.getItemSelectIndex(),
+                "depository", depository.getKey(), "itemSelectIndex"
+        );
 //       this.config.set("depository",  depository.getKey() , "drawingInterval", depository.getDrawingInterval());
         this.setValue(
                 depository.getNextDrawingTime(),

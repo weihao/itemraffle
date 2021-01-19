@@ -84,8 +84,8 @@ public class ItemRafflePool {
         this.state = state;
     }
 
-    public long getRemainingNextDrawTime() {
-        return (itemRaffleDepository.getNextDrawingTime() - System.currentTimeMillis()) / 1000L;
+    public int getRemainingNextDrawTime() {
+        return (int) ((itemRaffleDepository.getNextDrawingTime() - System.currentTimeMillis()) / 1000L);
     }
 
     public void refreshView() {
@@ -343,5 +343,4 @@ public class ItemRafflePool {
     public int getRaffleId() {
         return itemRaffleDepository.getHistory().size() + 1;
     }
-
 }

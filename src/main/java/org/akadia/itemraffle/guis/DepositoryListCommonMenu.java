@@ -9,6 +9,7 @@ import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
 import org.akadia.itemraffle.data.ItemRaffleDepository;
 import org.akadia.itemraffle.enums.PoolState;
+import org.akadia.itemraffle.utils.CalendarUitl;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -25,33 +26,33 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
         for (ItemRafflePool pool : pools) {
             ItemRaffleDepository depository = pool.getItemRaffleDepository();
             DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i',
-                    (viewer) -> {
-                        return new StaticGuiElement('i', depository.getIcon(), 1, click -> {
-                            if (click.getType().isRightClick()) {
-                                if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
-                                    pool.setState(PoolState.BLOCKED);
-                                    pool.getDepositoryCommonMenu().open(viewer);
-                                } else {
-                                    pool.getDepositoryViewerCommonMenu().open(viewer);
-                                }
-                                return true;
+                    (viewer) -> new StaticGuiElement('i', depository.getIcon(), 1, click -> {
+                        if (click.getType().isRightClick()) {
+                            if (click.getEvent().getWhoClicked().hasPermission("itemraffle.admin")) {
+                                pool.setState(PoolState.BLOCKED);
+                                pool.getDepositoryCommonMenu().open(viewer);
+                            } else {
+                                pool.getDepositoryViewerCommonMenu().open(viewer);
                             }
-                            if (pool.validateDepository()) {
-                                PoolViewerMenu poolViewerMenu = new PoolViewerMenu(main, viewer, pool);
-                                pool.getPoolViewerMenus().put(viewer.getName(), poolViewerMenu);
-                                poolViewerMenu.open(viewer);
-                            }
-
                             return true;
-                        },
-                                this.getMain().getLocale("gui.depositoryName", depository.getName()),
-                                this.getMain().getLocale("gui.depositoryMode", depository.getDepositoryMode()),
-                                this.getMain().getLocale("gui.depositorySelection", depository.getDepositorySelection()),
-                                this.getMain().getLocale("gui.drawingInterval", depository.getDrawingInterval()),
-                                this.getMain().getLocale("gui.nextDrawingTime", depository.getNextDrawingTime()),
-                                this.getMain().getLocale("gui.remainingNextDrawTime", pool.getRemainingNextDrawTime())
-                        );
-                    });
+                        }
+
+                        if (pool.validateDepository()) {
+                            PoolViewerMenu poolViewerMenu = new PoolViewerMenu(main, viewer, pool);
+                            pool.getPoolViewerMenus().put(viewer.getName(), poolViewerMenu);
+                            poolViewerMenu.open(viewer);
+                        }
+
+                        return true;
+                    },
+                            this.getMain().getLocale("gui.depositoryName", depository.getName()),
+                            this.getMain().getLocale("gui.depositoryMode", depository.getDepositoryMode()),
+                            this.getMain().getLocale("gui.depositorySelection", depository.getDepositorySelection()),
+                            this.getMain().getLocale("gui.itemSelectIndex", depository.getItemSelectIndex()),
+                            this.getMain().getLocale("gui.drawingInterval", CalendarUitl.formatSeconds(depository.getDrawingInterval())),
+                            this.getMain().getLocale("gui.nextDrawingTime", CalendarUitl.formatMillis(depository.getNextDrawingTime())),
+                            this.getMain().getLocale("gui.remainingNextDrawTime", CalendarUitl.formatSeconds(pool.getRemainingNextDrawTime()))
+                    ));
 
             group.addElement(dynamicGuiElement);
         }

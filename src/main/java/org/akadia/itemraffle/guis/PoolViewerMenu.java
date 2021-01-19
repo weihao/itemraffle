@@ -68,16 +68,17 @@ public class PoolViewerMenu extends BaseMenu {
                         }
                     })
                     .onClose(pl -> {
-                        List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
-                        list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
+                        this.getGui().addElement(
+                                new DynamicGuiElement('g', viewer -> {
+                                    List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
+                                    list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
+                                    GuiElementGroup group = new GuiElementGroup('g');
 
-                        GuiElementGroup group = new GuiElementGroup('g');
-
-                        for (Map.Entry<String, String> playerDeposit : list) {
-                            group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
-                        }
-
-                        getGui().addElement(group);
+                                    for (Map.Entry<String, String> playerDeposit : list) {
+                                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
+                                    }
+                                    return group;
+                                }));
 
                         click.getGui().show(pl);
                     })
@@ -89,16 +90,18 @@ public class PoolViewerMenu extends BaseMenu {
             return true;
         }, "Deposit"));
 
-        List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
-        list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
 
+        this.getGui().addElement(
+                new DynamicGuiElement('g', viewer -> {
+                    List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
+                    list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
+                    GuiElementGroup group = new GuiElementGroup('g');
 
-        GuiElementGroup group = new GuiElementGroup('g');
-
-        for (Map.Entry<String, String> playerDeposit : list) {
-            group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
-        }
-        this.getGui().addElement(group);
+                    for (Map.Entry<String, String> playerDeposit : list) {
+                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
+                    }
+                    return group;
+                }));
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
         this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));
