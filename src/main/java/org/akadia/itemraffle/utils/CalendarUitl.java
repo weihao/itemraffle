@@ -11,8 +11,12 @@ public class CalendarUitl {
         return simpleDateFormat.format(new Date(millis));
     }
 
+    /**
+     *
+     * @param seconds integer in seconds
+     * @return days:hours:minutes:seconds
+     */
     public static String formatSeconds(int seconds) {
-//        days:hours:minutes:seconds
         int minute = seconds / 60;
         int remainderSecond = seconds % 60;
 

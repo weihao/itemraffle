@@ -17,7 +17,7 @@ public class BoxViewerMenu extends BaseMenu {
 
 
     public BoxViewerMenu(ItemRaffleMain main, HumanEntity player) {
-        super(main, player, main.getLocale("gui", "boxMenuTitle", player.getName()));
+        super(main, player, main.getLocale("gui.boxMenuTitle", player.getName()));
 
         BoxConfiguration boxManager = this.getMain().getBoxManager();
         List<ItemStack> itemStacks = this.getMain().getBoxManager().getBoxes().getOrDefault(player.getName(), new ArrayList<>());
@@ -33,7 +33,7 @@ public class BoxViewerMenu extends BaseMenu {
             });
             itemGroup.addElement(s);
         }
-
+        // display item stacks in the inventory
         this.getGui().addElement(itemGroup);
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));

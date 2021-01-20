@@ -25,9 +25,11 @@ public class DepositoryCommonMenu extends BaseCommonMenu {
                 inv.addItem(prize);
             }
         }
+        // show depository prizes
         this.getGui().addElement(new GuiStorageElement('i', inv));
 
         this.getGui().setCloseAction(close -> {
+            // save prizes on close
             ItemStack[] sort = InventoryUtil.sort(inv);
             depository.setPrizes(ItemStackUtil.arrayToList(sort.clone()));
             this.getMain().getDepositoryConfiguration().saveDepository(depository);

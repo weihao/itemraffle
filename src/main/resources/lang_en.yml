@@ -1,31 +1,36 @@
 msg:
   notEnoughMoney: "You do not have enough money."
   playerWinningMessage: "Congratulations, You won a ${0} item from {1} with a chance of {2}%."
-
+  broadcastWinner: "&b{0} &ais a winner of {1}#{2}, who won the item &7[&a{3}&7]&a valued &b${4} with a chance of &b{5}%."
 
 gui:
   listMenuTitle: "Viewing Pools"
   boxMenuTitle: "{0}'s Box"
   historyMenuTitle: "{0}'s Past Winners"
-  depositoryMenuTitle: "[Admin] {0} Depository"
-  depositoryViewerMenuTitle: "[User] {0} Depository"
+  depositoryMenuTitle: "[Admin] {0}"
+  depositoryViewerMenuTitle: "{0}"
   poolMenuTitle: "{0} Raffle#{1}"
   nextPage: "Go to previous page (%prevpage%)"
   prevPage: "Go to next page (%nextpage%)"
-  depositoryName: "{0}"
-  depositoryMode: "Mode: {0}"
-  itemSelectIndex: "Drawing Item: {0}"
-  depositorySelection: "Selection: {0}"
-  drawingInterval: "Frequency: {0}"
-  nextDrawingTime: "Drawing Time: {0}"
-  remainingNextDrawTime: "Drawing in: {0}"
+  depositoryName: "&b{0}"
+  depositoryMode: "&8Mode: &7{0}"
+  itemSelectIndex: "&8Drawing Item: &7{0}"
+  depositorySelection: "&8Selection: &7{0}"
+  drawingInterval: "&8Frequency: &7{0}"
+  nextDrawingTime: "&8Drawing Time: &7{0}"
+  remainingNextDrawTime: "&8Drawing in: &7{0}"
+  totalEntry: "&8Player entries: &7{0}"
+  totalValue: "&8Item value: &7{0}"
   errorNegativeOrZero: "Cannot Be Negative or Zero!"
   errorNotEnoughMoney: "Not Enough Money!"
   errorNotANumber: "Not a Number!"
+  errorNoEntries: "{0} pool does not have any entries to calculate a winner!"
   depositing: "Depositing to {0}"
+
 log:
   failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"
   failedCalculateWinner: "Failed to calculate a winner for depository {0}"
+  winnerLog: "{0} is a winner of {1}#{2}, who won the item {3} valued at ${4} with a chance of {5}%."
 
 enums:
   cycle: "Same item can be repeatedly drawn"

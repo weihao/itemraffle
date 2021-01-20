@@ -132,4 +132,8 @@ public class ItemRaffleMain extends JavaPlugin {
         return MessageFormat.format(string, arguments);
     }
 
+    public String getEnumString(String enumName) {
+        return this.getLocale("enums." + enumName.toLowerCase());
+    }
+
 }

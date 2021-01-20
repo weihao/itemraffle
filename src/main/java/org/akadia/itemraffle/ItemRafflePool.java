@@ -94,20 +94,15 @@ public class ItemRafflePool {
     }
 
     public void run() {
-        // 暂停状态
         if (!this.validateDepository()) {
             this.setState(PoolState.ERROR);
-//            this.getMain().getLogger().log(Level.WARNING, "物品抽奖仓库设置错误, 抽奖池处于无效状态...");
             return;
         }
 
         if (this.getState().equals(PoolState.BLOCKED)) {
-//            this.getMain().getLogger().log(Level.INFO, "物品抽奖仓库暂停中...");
-
             return;
         }
 
-//        this.getMain().getLogger().log(Level.INFO, "抽奖池开始正常工作, 距离此次开奖剩余 {0} 秒...", getRemainingNextDrawTime());
         this.setState(PoolState.RUNNING);
 
         if (this.isDrawingTimeNow()) {
@@ -187,8 +182,10 @@ public class ItemRafflePool {
         return bigDecimal;
     }
 
+    /**
+     * @return total value of the pool
+     */
     public BigDecimal getTotalPoolDeposit() {
-        // 获取当前抽奖池总共掷入的金钱数据
         BigDecimal base = new BigDecimal(0);
         for (String economy : getItemRaffleDepository().getPlayerDepositMap().values())
             base = base.add(new BigDecimal(economy));
@@ -213,8 +210,7 @@ public class ItemRafflePool {
         int totalEntry = getPlayerCount();
 
         if (totalEntry == 0) {
-            // 并没有任何玩家进行掷入金钱
-            this.getMain().getLogger().log(Level.INFO, "此次抽奖池没有任何玩家掷入金钱, 无法计算获奖者...");
+            this.getMain().getLogger().log(Level.INFO, this.getMain().getLocale("gui.errorNoEntries"));
             return null;
         }
 
@@ -248,10 +244,23 @@ public class ItemRafflePool {
                 winnerEntry.getDeposit(),
                 this.calculateChanceToString(totalPoolDeposit, winnerEntry.getDeposit()),
                 prize);
-        // 发送全服消息通知本次获奖者
-//        sendAwardWinnerMessage(total, winner, awardItem);
 
-        this.getMain().getLogger().log(Level.INFO, "恭喜此次抽奖池获奖者玩家 {0}, 总掷入 {1} 金钱.", new Object[]{winner.getUsername(), winner.getPlayerDepositValue()});
+        this.broadcastMessage(getMain().getLocale("msg.broadcastWinner",
+                winner.getUsername(),
+                this.getItemRaffleDepository().getName(),
+                winner.getId(),
+                winner.getAwardedPrize(),
+                winner.getTotalPoolValue(),
+                winner.getChance()
+        ));
+
+        this.getMain().getLogger().log(Level.INFO, getMain().getLocale("log.winnerLog",
+                winner.getUsername(),
+                this.getItemRaffleDepository().getName(),
+                winner.getId(),
+                winner.getAwardedPrize(),
+                winner.getTotalPoolValue(),
+                winner.getChance()));
 
         switch (itemRaffleDepository.getDepositoryMode()) {
             case DRAIN:
@@ -284,6 +293,11 @@ public class ItemRafflePool {
         prizes.remove(0);
     }
 
+    private void broadcastMessage(String message) {
+        for (Player player : Bukkit.getOnlinePlayers())
+            player.sendMessage(message);
+    }
+
     public void incrementSelectIndex() {
         int selectIndex;
         switch (itemRaffleDepository.getDepositorySelection()) {
@@ -307,7 +321,7 @@ public class ItemRafflePool {
         return this.getItemRaffleDepository().getItemSelectIndex() < this.getItemCount();
     }
 
-    private BigDecimal calculateChance(BigDecimal total, String economy) {
+    public BigDecimal calculateChance(BigDecimal total, String economy) {
         BigDecimal bigDecimal;
         BigDecimal bigDecimalEconomy = new BigDecimal(economy);
 
@@ -325,12 +339,12 @@ public class ItemRafflePool {
         return bigDecimal;
     }
 
-    private double calculateChanceToDouble(BigDecimal total, String economy) {
+    public double calculateChanceToDouble(BigDecimal total, String economy) {
         return calculateChance(total, economy).doubleValue();
     }
 
-    private String calculateChanceToString(BigDecimal total, String economy) {
-        BigDecimal chance = calculateChance(total, economy);
+    public String calculateChanceToString(BigDecimal total, String deposit) {
+        BigDecimal chance = calculateChance(total, deposit);
         if (chance.doubleValue() <= 1d)
             chance = chance.multiply(new BigDecimal(100));
         return chance.toPlainString();

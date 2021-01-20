@@ -16,9 +16,10 @@ import java.util.List;
 public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
 
     public DepositoryHistoryCommonMenu(ItemRaffleMain main, ItemRafflePool pool) {
-        super(main, main.getLocale("gui", "historyMenuTitle", pool.getItemRaffleDepository().getName()));
+        super(main, main.getLocale("gui.historyMenuTitle", pool.getItemRaffleDepository().getName()));
 
-        DynamicGuiElement pastWinners = new DynamicGuiElement('i', viewer -> {
+        // show past winners
+        this.getGui().addElement(new DynamicGuiElement('i', viewer -> {
             GuiElementGroup pastWinnersGroup = new GuiElementGroup('i');
             List<ItemRaffleWinnerInfo> history = pool.getItemRaffleDepository().getHistory();
             for (ItemRaffleWinnerInfo winnerInfo : history) {
@@ -30,9 +31,7 @@ public class DepositoryHistoryCommonMenu extends BaseCommonMenu {
                                 winnerInfo.getPlayerDepositValue()));
             }
             return pastWinnersGroup;
-        });
-
-        this.getGui().addElement(pastWinners);
+        }));
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
         this.getGui().addElement(new GuiPageElement('n', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.NEXT, this.getMain().getLocale("gui.nextPage")));

@@ -36,15 +36,16 @@ public class PoolViewerMenu extends BaseMenu {
 
         this.getGui().addElement(new DynamicGuiElement('i', (viewer) -> {
             if (!pool.validateDepository()) {
-                return new StaticGuiElement('i', new ItemStack(Material.END_PORTAL_FRAME));
+                return new StaticGuiElement('i', new ItemStack(Material.AIR));
             }
             return new StaticGuiElement('i', pool.getSelectedItemStack());
 
-        })); // icon
+        }));
+
         this.getGui().addElement(new StaticGuiElement('h', new ItemStack(Material.BOOK), 1, click -> {
             pool.getDepositoryHistoryCommonMenu().open(player);
             return true;
-        }));
+        }, getMain().getLocale("gui.historyMenuTitle", depository.getName())));
 
         this.getGui().addElement(new StaticGuiElement('d', new ItemStack(Material.OAK_SIGN), 1, click -> {
             click.getGui().close();
@@ -98,7 +99,10 @@ public class PoolViewerMenu extends BaseMenu {
                     GuiElementGroup group = new GuiElementGroup('g');
 
                     for (Map.Entry<String, String> playerDeposit : list) {
-                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
+                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER),
+                                playerDeposit.getKey(),
+                                playerDeposit.getValue(),
+                                pool.calculateChanceToString(pool.getTotalPoolDeposit(), playerDeposit.getValue())));
                     }
                     return group;
                 }));

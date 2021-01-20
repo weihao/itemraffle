@@ -1,6 +1,8 @@
 package org.akadia.itemraffle.configs;
 
 import org.akadia.itemraffle.ItemRaffleMain;
+import org.akadia.itemraffle.enums.DepositoryMode;
+import org.akadia.itemraffle.enums.DepositorySelection;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
@@ -22,8 +24,27 @@ public class LanguageConfiguration extends Configuration {
             if (value == null) {
                 continue;
             }
-            locales.put(key, ChatColor.translateAlternateColorCodes('&', value));
+            locales.put(key, toColor(value));
         }
+
+        for (DepositoryMode enumName : DepositoryMode.values()) {
+            String key = "enums." + enumName.toString().toLowerCase();
+            String value = this.getConfig().getString(key);
+            if (value == null) {
+                continue;
+            }
+            locales.put(key, toColor(value));
+        }
+
+        for (DepositorySelection enumName : DepositorySelection.values()) {
+            String key = "enums." + enumName.toString().toLowerCase();
+            String value = this.getConfig().getString(key);
+            if (value == null) {
+                continue;
+            }
+            locales.put(key, toColor(value));
+        }
+
     }
 
     public Map<String, String> getLocales() {
@@ -40,8 +61,7 @@ public class LanguageConfiguration extends Configuration {
 
     }
 
-    public void getSections(String sectionName) {
-
+    public String toColor(String in) {
+        return ChatColor.translateAlternateColorCodes('&', in);
     }
-
 }

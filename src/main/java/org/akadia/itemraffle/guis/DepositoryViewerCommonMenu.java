@@ -13,19 +13,18 @@ import java.util.List;
 public class DepositoryViewerCommonMenu extends BaseCommonMenu {
 
     public DepositoryViewerCommonMenu(ItemRaffleMain main, ItemRafflePool itemRafflePool) {
-        super(main, main.getLocale("gui", "depositoryViewerMenuTitle", itemRafflePool.getItemRaffleDepository().getName(), itemRafflePool.getRaffleId()));
+        super(main, main.getLocale("gui.depositoryViewerMenuTitle", itemRafflePool.getItemRaffleDepository().getName(), itemRafflePool.getRaffleId()));
         ItemRaffleDepository depository = itemRafflePool.getItemRaffleDepository();
 
-        DynamicGuiElement dynamicGuiElement = new DynamicGuiElement('i', viewer -> {
+        // show depository prizes
+        this.getGui().addElement(new DynamicGuiElement('i', viewer -> {
             GuiElementGroup group = new GuiElementGroup('i');
             List<ItemStack> prizes = depository.getPrizes();
             for (ItemStack prize : prizes) {
                 group.addElement(new StaticGuiElement('i', prize));
             }
             return group;
-        });
-
-        this.getGui().addElement(dynamicGuiElement);
+        }));
 
     }
 
