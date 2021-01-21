@@ -45,7 +45,8 @@ public class PoolViewerMenu extends BaseMenu {
         this.getGui().addElement(new StaticGuiElement('h', new ItemStack(Material.BOOK), 1, click -> {
             pool.getDepositoryHistoryCommonMenu().open(player);
             return true;
-        }, getMain().getLocale("gui.historyMenuTitle", depository.getName())));
+        }, this.getMain().getLocale("gui.viewHistoryButton"),
+                this.getMain().getLocale("gui.leftClick", this.getMain().getLocale("gui.viewHistoryButton"))));
 
         this.getGui().addElement(new StaticGuiElement('d', new ItemStack(Material.OAK_SIGN), 1, click -> {
             click.getGui().close();
@@ -61,7 +62,7 @@ public class PoolViewerMenu extends BaseMenu {
                                 return AnvilGUI.Response.text(this.getMain().getLocale("gui.errorNotEnoughMoney"));
                             }
 
-                            getMain().getDepositoryConfiguration().saveDepository(depository);
+                            this.getMain().getDepositoryConfiguration().saveDepository(depository);
 
                             return AnvilGUI.Response.close();
                         } catch (NumberFormatException e) {
@@ -69,18 +70,6 @@ public class PoolViewerMenu extends BaseMenu {
                         }
                     })
                     .onClose(pl -> {
-                        this.getGui().addElement(
-                                new DynamicGuiElement('g', viewer -> {
-                                    List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
-                                    list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
-                                    GuiElementGroup group = new GuiElementGroup('g');
-
-                                    for (Map.Entry<String, String> playerDeposit : list) {
-                                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER), playerDeposit.getKey(), playerDeposit.getValue()));
-                                    }
-                                    return group;
-                                }));
-
                         click.getGui().show(pl);
                     })
                     .title(getMain().getLocale("gui.depositing", pool.getItemRaffleDepository().getName()))
@@ -89,7 +78,8 @@ public class PoolViewerMenu extends BaseMenu {
                     .open((Player) player);
 
             return true;
-        }, "Deposit"));
+        }, this.getMain().getLocale("gui.depositButton"),
+                this.getMain().getLocale("gui.leftClick", this.getMain().getLocale("gui.depositButton"))));
 
 
         this.getGui().addElement(
@@ -100,9 +90,9 @@ public class PoolViewerMenu extends BaseMenu {
 
                     for (Map.Entry<String, String> playerDeposit : list) {
                         group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER),
-                                playerDeposit.getKey(),
-                                playerDeposit.getValue(),
-                                pool.calculateChanceToString(pool.getTotalPoolDeposit(), playerDeposit.getValue())));
+                                this.getMain().getLocale("gui.playerName", playerDeposit.getKey()),
+                                this.getMain().getLocale("gui.playerDeposit", playerDeposit.getValue()),
+                                this.getMain().getLocale("gui.playerChance", pool.calculateChanceToString(pool.getTotalPoolDeposit(), playerDeposit.getValue()))));
                     }
                     return group;
                 }));
@@ -115,7 +105,7 @@ public class PoolViewerMenu extends BaseMenu {
     @Override
     String[] getSetup() {
         return new String[]{
-                "dih      ",
+                "dh      i",
                 "ggggggggg",
                 "ggggggggg",
                 "ggggggggg",

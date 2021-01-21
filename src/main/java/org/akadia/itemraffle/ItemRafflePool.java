@@ -210,7 +210,7 @@ public class ItemRafflePool {
         int totalEntry = getPlayerCount();
 
         if (totalEntry == 0) {
-            this.getMain().getLogger().log(Level.INFO, this.getMain().getLocale("gui.errorNoEntries"));
+            this.getMain().getLogger().log(Level.INFO, this.getMain().getLocale("log.errorNoEntries"));
             return null;
         }
 
@@ -249,16 +249,16 @@ public class ItemRafflePool {
                 winner.getUsername(),
                 this.getItemRaffleDepository().getName(),
                 winner.getId(),
-                winner.getAwardedPrize(),
+                winner.getAwardedPrize().getType().toString(),
                 winner.getTotalPoolValue(),
                 winner.getChance()
         ));
 
-        this.getMain().getLogger().log(Level.INFO, getMain().getLocale("log.winnerLog",
+        this.getMain().getLogger().log(Level.INFO, this.getMain().getLocale("log.winnerLog",
                 winner.getUsername(),
                 this.getItemRaffleDepository().getName(),
                 winner.getId(),
-                winner.getAwardedPrize(),
+                winner.getAwardedPrize().getType().toString(),
                 winner.getTotalPoolValue(),
                 winner.getChance()));
 
@@ -281,7 +281,7 @@ public class ItemRafflePool {
         Player player = Bukkit.getServer().getPlayer(winner.getUsername());
         if (player != null)
             player.sendMessage(
-                    getMain().getLocale("msg.playerWinningMessage",
+                    this.getMain().getLocale("msg.playerWinningMessage",
                             winner.getTotalPoolValue(),
                             this.getItemRaffleDepository().getName(),
                             winner.getChance()));

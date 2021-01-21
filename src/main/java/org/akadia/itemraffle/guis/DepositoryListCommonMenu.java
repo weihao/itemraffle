@@ -56,7 +56,9 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                                 this.getMain().getLocale("gui.nextDrawingTime", CalendarUitl.formatMillis(depository.getNextDrawingTime())),
                                 this.getMain().getLocale("gui.remainingNextDrawTime", CalendarUitl.formatSeconds(pool.getRemainingNextDrawTime())),
                                 this.getMain().getLocale("gui.totalEntry", pool.getPlayerCount()),
-                                this.getMain().getLocale("gui.totalValue", pool.getTotalPoolDeposit().toPlainString())
+                                this.getMain().getLocale("gui.totalValue", pool.getTotalPoolDeposit().toPlainString()),
+                                this.getMain().getLocale("gui.leftClick", this.getMain().getLocale("gui.viewPoolButton")),
+                                this.getMain().getLocale("gui.rightClick", this.getMain().getLocale("gui.viewPrizesButton"))
                         ));
             }
             return depositoryGroup;

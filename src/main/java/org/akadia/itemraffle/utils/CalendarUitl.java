@@ -12,7 +12,6 @@ public class CalendarUitl {
     }
 
     /**
-     *
      * @param seconds integer in seconds
      * @return days:hours:minutes:seconds
      */
