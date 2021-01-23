@@ -1,5 +1,8 @@
 package org.akadia.itemraffle.utils;
 
+import org.akadia.itemraffle.ItemRaffleMain;
+import org.bukkit.ChatColor;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,7 +18,10 @@ public class CalendarUitl {
      * @param seconds integer in seconds
      * @return days:hours:minutes:seconds
      */
-    public static String formatSeconds(int seconds) {
+    public static String formatSeconds(ItemRaffleMain main, int seconds) {
+        if (seconds < 0) {
+            return main.getLocale("gui.expiredTimer");
+        }
         int minute = seconds / 60;
         int remainderSecond = seconds % 60;
 

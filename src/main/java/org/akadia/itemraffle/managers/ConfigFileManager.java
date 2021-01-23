@@ -61,7 +61,7 @@ public class ConfigFileManager {
     private void backup(String configName) {
         File configFile = files.get(configName);
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd@HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String timestamp = formatter.format(date);
         File dataDirectory = plugin.getDataFolder();
         File playerDataDirectory = new File(dataDirectory, "config_backup");
@@ -81,7 +81,6 @@ public class ConfigFileManager {
 
         InputStream defConfigStream = plugin.getResource(configName);
 
-        backup(configName);
         if (defConfigStream != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
             for (String string : defConfig.getKeys(true)) {
@@ -92,6 +91,9 @@ public class ConfigFileManager {
                 if (!config.isConfigurationSection(string))
                     settings++;
             }
+        }
+        if (addedSettings > 0) {
+            backup(configName);
         }
 
 

@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class DepositoryListCommonMenu extends BaseCommonMenu {
 
@@ -52,9 +53,9 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                                 this.getMain().getLocale("gui.depositoryMode", main.getEnumString(depository.getDepositoryMode().toString())),
                                 this.getMain().getLocale("gui.depositorySelection", main.getEnumString(depository.getDepositorySelection().toString())),
                                 this.getMain().getLocale("gui.itemSelectIndex", depository.getItemSelectIndex()),
-                                this.getMain().getLocale("gui.drawingInterval", CalendarUitl.formatSeconds(depository.getDrawingInterval())),
+                                this.getMain().getLocale("gui.drawingInterval", CalendarUitl.formatSeconds(main, depository.getDrawingInterval())),
                                 this.getMain().getLocale("gui.nextDrawingTime", CalendarUitl.formatMillis(depository.getNextDrawingTime())),
-                                this.getMain().getLocale("gui.remainingNextDrawTime", CalendarUitl.formatSeconds(pool.getRemainingNextDrawTime())),
+                                this.getMain().getLocale("gui.remainingNextDrawTime", CalendarUitl.formatSeconds(main, pool.getRemainingNextDrawTime())),
                                 this.getMain().getLocale("gui.totalEntry", pool.getPlayerCount()),
                                 this.getMain().getLocale("gui.totalValue", pool.getTotalPoolDeposit().toPlainString()),
                                 this.getMain().getLocale("gui.leftClick", this.getMain().getLocale("gui.viewPoolButton")),

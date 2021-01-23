@@ -91,7 +91,7 @@
         <dependency>
             <groupId>com.github.Phoenix616</groupId>
             <artifactId>InventoryGui</artifactId>
-            <version>85ff40a342</version>
+            <version>e090666dd2</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>de.themoep</groupId>-->

@@ -1,7 +1,7 @@
 msg:
   notEnoughMoney: "&cYou do not have enough money."
   playerWinningMessage: "&aCongratulations, You won a &b${0} &aitem from &b{1} &awith a chance of &b{2}&a%."
-  broadcastWinner: "&b{0} &ais a winner of {1}#{2}, who won the item &7[&a{3}&7]&a valued &b${4}&a with a chance of &b{5}%."
+  broadcastWinner: "&b{0} &ais a winner of &b{1}&c#{2}&a, who won the item &7[&a{3}&7]&a valued at &b${4}&a with a chance of &b{5}%."
 
 gui:
   listMenuTitle: "&bViewing Pools"
@@ -34,11 +34,15 @@ gui:
   viewPoolButton: "&bView Pool"
   leftClick: "&eLeft click to {0}"
   rightClick: "&eRight click to {0}"
+  expiredTimer: "&EXPIRED"
+
 log:
+  setupVaultFailed: "Failed to load an economy plugin"
   failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"
   failedCalculateWinner: "Failed to calculate a winner for depository {0}"
   winnerLog: "{0} is a winner of {1}#{2}, who won the item {3} valued at ${4} with a chance of {5}%."
   errorNoEntries: "{0} pool does not have any entries to calculate a winner!"
+
 
 enums:
   cycle: "Same item can be repeatedly drawn"

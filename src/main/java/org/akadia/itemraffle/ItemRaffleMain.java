@@ -101,7 +101,7 @@ public class ItemRaffleMain extends JavaPlugin {
         PluginManager pm = this.getServer().getPluginManager();
 
         if (!setupEconomy()) {
-            this.getLogger().log(Level.SEVERE, " 前置 Vault 经济插件加载失败.");
+            this.getLogger().log(Level.SEVERE, this.getLocale("log.setupVaultFailed"));
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }

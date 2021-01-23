@@ -333,7 +333,6 @@ public class ItemRafflePool {
         try {
             bigDecimal = bigDecimalEconomy.divide(total, 10, RoundingMode.HALF_UP).stripTrailingZeros();
         } catch (Exception e) {
-            // 异常说明整除舍入报错则使用不舍入模式
             bigDecimal = bigDecimalEconomy.divide(total, 10, RoundingMode.UNNECESSARY).stripTrailingZeros();
         }
         return bigDecimal;
