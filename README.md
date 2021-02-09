@@ -1,33 +1,33 @@
 # ItemRaffle
 
-## 简介
+## Description
 
-- IR(ItemRaffle)是一个基于概率的抽奖插件。玩家往奖池投入游戏金币，如玩家A掷入$100，玩家B掷入$100。当开奖时只有玩家A和玩家B参与，那玩家A的获奖率是=`总价值 / 玩家A的掷入价值` =
-  50%，玩家B的获奖率是=`总价值 / 玩家B的掷入价值` = 50%
+- IR(ItemRaffle) is a chance based jackpot system
 
 ## Why ItemRaffle？
 
-- 玩家可使用游戏币对抗其他玩家。
-- 玩家可以玩累积奖金并赢取物品奖励。
-- 服主可以将奖品设置为赞助物品或具有特殊权限的物品。
-- 以自助的方式保证服务器货币流通。
-- 抵抗服务器经济的通货膨胀。
+- Players can compete using economy
+- Players can win prizes using economy
+- Players can get rare and high value items
+- Self served way to keep server economy in balance
+- Reduce the inflation in the server economy
 
-## 功能
+## Functionality
 
-- 菜单
-- 指令
-- 配置文件
-- 物品支持NBT
-- 离线玩家物品交付
-- 自动开奖
-- 自动选取下个奖品
-- 支持理论上无限大的奖池经济(只要你有足够多的内存)
+- Menus
+- Commands and Permissions
+- Config files
+- Language files
+- Supports NBT
+- Offline player prize delivery
+- Auto draw prize
+- Auto select next prize
+- Unlimited deposit value
 
-## 指令
+## Commands
 
-- /ir help 查询帮助
-- /ir menu 打开页面
+- /ir help
+- /ir menu
 
 ## Permission
 
