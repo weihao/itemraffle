@@ -2,7 +2,7 @@
 
 ## Description
 
-- IR(ItemRaffle) is a chance based jackpot system
+- IR(ItemRaffle) is a **chance based jackpot** system
 - Players can deposit to a pool for a chance to win a prize.
 - When the pool drawing timer is up, and let's say there are only two participating players: player Alice and player Bob.
     - Player Alice deposits `$100` and player Bob deposits `$100`.
