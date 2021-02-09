@@ -3,7 +3,7 @@ package org.akadia.itemraffle.configs;
 import org.akadia.itemraffle.ItemRaffleMain;
 
 public class PluginConfiguration extends Configuration {
-    private String lang;
+    private final String lang;
 
     public PluginConfiguration(ItemRaffleMain main) {
         super(main);

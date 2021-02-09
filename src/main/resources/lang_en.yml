@@ -34,10 +34,14 @@ gui:
   viewPoolButton: "&bView Pool"
   leftClick: "&eLeft click to {0}"
   rightClick: "&eRight click to {0}"
-  expiredTimer: "&EXPIRED"
-
+  expiredTimer: "&aEXPIRED"
+  second: "s "
+  minute: "m "
+  hour: "h "
+  day: "d "
 log:
   setupVaultFailed: "Failed to load an economy plugin"
+  setupMetricsFailed: "Failed to setup metrics"
   failedDepositDeduction: "Failed to deduct from {0}'s economy account, error: {1}"
   failedCalculateWinner: "Failed to calculate a winner for depository {0}"
   winnerLog: "{0} is a winner of {1}#{2}, who won the item {3} valued at ${4} with a chance of {5}%."

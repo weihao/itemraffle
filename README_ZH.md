@@ -5,7 +5,7 @@
 - IR(ItemRaffle)是一个基于概率的抽奖插件。玩家往奖池投入游戏金币，如玩家A掷入$100，玩家B掷入$100。当开奖时只有玩家A和玩家B参与，那玩家A的获奖率是=`总价值 / 玩家A的掷入价值` =
   50%，玩家B的获奖率是=`总价值 / 玩家B的掷入价值` = 50%
 
-## Why ItemRaffle？
+## 为什么选择ItemRaffle？
 
 - 玩家可使用游戏币对抗其他玩家。
 - 玩家可以玩累积奖金并赢取物品奖励。
@@ -29,13 +29,13 @@
 - /ir help 查询帮助
 - /ir menu 打开页面
 
-## Permission
+## 权限
 
 - itemraffle.admin
 
-## Demo
+## 示例
 
-## Links
+## 链接
 
-- [Repo](https://github.com/weihao/itemraffle)
-- [Lang](https://github.com/weihao/itemraffle/blob/main/src/main/resources/lang_en.yml)
+- [开源仓库](https://github.com/weihao/itemraffle)
+- [语言文件](https://github.com/weihao/itemraffle/blob/main/src/main/resources/lang_en.yml)

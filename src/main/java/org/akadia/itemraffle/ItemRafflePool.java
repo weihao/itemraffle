@@ -30,8 +30,8 @@ public class ItemRafflePool {
     private final Map<String, PoolViewerMenu> poolViewerMenus;
     private final ItemRaffleDepository itemRaffleDepository;
     private final ItemRaffleMain main;
+    private final DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private DepositoryCommonMenu depositoryCommonMenu;
-    private DepositoryViewerCommonMenu depositoryViewerCommonMenu;
     private PoolState state;
 
     public ItemRafflePool(ItemRaffleMain main, ItemRaffleDepository itemRaffleDepository) {

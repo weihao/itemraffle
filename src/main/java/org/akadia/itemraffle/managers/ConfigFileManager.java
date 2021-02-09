@@ -1,5 +1,6 @@
 package org.akadia.itemraffle.managers;
 
+import com.google.common.base.Charsets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,6 +9,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.FileUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +24,7 @@ public class ConfigFileManager {
     Map<String, FileConfiguration> configs;
     Map<String, File> files;
     Logger logger;
-    private Plugin plugin;
+    private final Plugin plugin;
 
     public ConfigFileManager(Plugin plugin) {
         this.plugin = plugin;
@@ -30,19 +33,28 @@ public class ConfigFileManager {
         this.files = new HashMap<>();
 
         if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
+            boolean mkdir = plugin.getDataFolder().mkdir();
+            if (!mkdir) {
+                Bukkit.getServer().getLogger().severe(ChatColor.RED
+                        + "Failed to create data folder!");
+            }
         }
     }
 
     public FileConfiguration create(String configName) {
         File configFile = new File(plugin.getDataFolder(), configName);
         this.files.put(configName, configFile);
-        FileConfiguration config;
+        FileConfiguration config = null;
 
         if (!configFile.exists()) {
             this.plugin.saveResource(configName, true);
-            config = YamlConfiguration.loadConfiguration(configFile);
-            this.configs.put(configName, config);
+            try {
+                config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(configFile), Charsets.UTF_8));
+                this.configs.put(configName, config);
+            } catch (FileNotFoundException e) {
+                Bukkit.getServer().getLogger().severe(ChatColor.RED
+                        + "Could not locate file " + configFile.getName() + ".yml!");
+            }
         } else {
             // Generating missing configuration.
             config = YamlConfiguration.loadConfiguration(configFile);

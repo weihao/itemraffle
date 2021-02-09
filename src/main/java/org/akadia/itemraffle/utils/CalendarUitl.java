@@ -1,7 +1,6 @@
 package org.akadia.itemraffle.utils;
 
 import org.akadia.itemraffle.ItemRaffleMain;
-import org.bukkit.ChatColor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,9 +30,9 @@ public class CalendarUitl {
         int day = hour / 24;
         int remainderHour = hour % 24;
 
-        return (day < 10 ? "0" + day : day) + ":" +
-                (remainderHour < 10 ? "0" + remainderHour : remainderHour) + ":" +
-                (remainderMinute < 10 ? "0" + remainderMinute : remainderMinute) + ":" +
-                (remainderSecond < 10 ? "0" + remainderSecond : remainderSecond);
+        return (day < 10 ? "0" + day : day) + main.getLocale("gui.day") +
+                (remainderHour < 10 ? "0" + remainderHour : remainderHour) + main.getLocale("gui.hour") +
+                (remainderMinute < 10 ? "0" + remainderMinute : remainderMinute) + main.getLocale("gui.minute") +
+                (remainderSecond < 10 ? "0" + remainderSecond : remainderSecond) + main.getLocale("gui.second");
     }
 }

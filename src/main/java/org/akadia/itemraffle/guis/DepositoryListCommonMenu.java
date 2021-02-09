@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 public class DepositoryListCommonMenu extends BaseCommonMenu {
 

@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class LanguageConfiguration extends Configuration {
 
-    private Map<String, String> locales;
+    private final Map<String, String> locales;
 
     public LanguageConfiguration(ItemRaffleMain main) {
         super(main);

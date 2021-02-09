@@ -112,6 +112,7 @@ public class ItemRaffleMain extends JavaPlugin {
         Plugin plugin = this.getServer().getPluginManager().getPlugin("Vault");
         if (plugin != null && plugin.isEnabled()) {
             RegisteredServiceProvider<Economy> service = Bukkit.getServicesManager().getRegistration(Economy.class);
+            //noinspection ConstantConditions
             return service != null && (this.economy = service.getProvider()) != null;
         }
         return false;

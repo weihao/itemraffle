@@ -19,7 +19,7 @@ public class GUIManager extends BukkitRunnable {
         this.main = main;
         this.itemDepositoryCommonMenu = new DepositoryListCommonMenu(main);
 
-        this.runTaskTimerAsynchronously(main, 0L, 20L); // 开始任务
+        this.runTaskTimerAsynchronously(main, 0L, 20L);
     }
 
     public DepositoryListCommonMenu getDepositoryListCommonMenu() {
