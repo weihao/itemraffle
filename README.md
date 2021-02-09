@@ -3,6 +3,12 @@
 ## Description
 
 - IR(ItemRaffle) is a chance based jackpot system
+- Players can deposit to a pool for a chance to win a prize.
+- When the pool drawing timer is up, and let's say there are only two participating players: player Alice and player Bob.
+    - Player Alice deposits `$100` and player Bob deposits `$100`.
+    - Total value of the jackpot is `$200`.
+    - Player Alice has a winning chance of `Player Alice deposit / total value` = `100 / 200 = 50%`.
+    - Player Bob has a winning chance of `Player Bob deposit / total value` = `100 / 200 = 50%`.
 
 ## Why ItemRaffle？
 
@@ -34,6 +40,12 @@
 - itemraffle.admin
 
 ## Demo
+
+## Planned
+- Show prize item in chat by hover over
+- Show more info in past winners
+- Engraving the jackpot value to the prize item lore
+- Show player head in the deposits
 
 ## Links
 
