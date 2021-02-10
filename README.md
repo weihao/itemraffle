@@ -30,6 +30,11 @@
 - Auto select next prize
 - Unlimited deposit value
 
+## Instructions
+- Use `depository.yml` to create pools
+- For admins in the game, right click a pool to deposit items.
+- For players in the game, left click a pool to deposit money.
+
 ## Commands
 
 - /ir help
