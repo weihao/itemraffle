@@ -5,6 +5,7 @@ import de.themoep.inventorygui.DynamicGuiElement;
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.GuiPageElement;
 import de.themoep.inventorygui.StaticGuiElement;
+import dev.dbassett.skullcreator.SkullCreator;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.akadia.itemraffle.ItemRaffleMain;
 import org.akadia.itemraffle.ItemRafflePool;
@@ -82,19 +83,35 @@ public class PoolViewerMenu extends BaseMenu {
                 this.getMain().getLocale("gui.leftClick", this.getMain().getLocale("gui.depositButton"))));
 
 
+        Map<String, String> playerDepositMap = pool.getItemRaffleDepository().getPlayerDepositMap();
         this.getGui().addElement(
                 new DynamicGuiElement('g', viewer -> {
-                    List<Map.Entry<String, String>> list = new LinkedList<>(pool.getItemRaffleDepository().getPlayerDepositMap().entrySet());
+                    List<Map.Entry<String, String>> list = new LinkedList<>(playerDepositMap.entrySet());
                     list.sort((o1, o2) -> new BigDecimal(o2.getValue()).compareTo(new BigDecimal(o1.getValue())));
                     GuiElementGroup group = new GuiElementGroup('g');
 
                     for (Map.Entry<String, String> playerDeposit : list) {
-                        group.addElement(new StaticGuiElement('g', new ItemStack(Material.PAPER),
+                        ItemStack skull = SkullCreator.itemFromName(playerDeposit.getKey());
+                        group.addElement(new StaticGuiElement('g', skull,
                                 this.getMain().getLocale("gui.playerName", playerDeposit.getKey()),
                                 this.getMain().getLocale("gui.playerDeposit", playerDeposit.getValue()),
                                 this.getMain().getLocale("gui.playerChance", pool.calculateChanceToString(pool.getTotalPoolDeposit(), playerDeposit.getValue()))));
                     }
                     return group;
+                }));
+
+
+        this.getGui().addElement(
+                new DynamicGuiElement('c', viewer -> {
+                    ItemStack skull = SkullCreator.itemFromUuid(player.getUniqueId());
+                    if (playerDepositMap.containsKey(player.getName())) {
+                        return new StaticGuiElement('c', skull,
+                                this.getMain().getLocale("gui.playerName", player.getName()),
+                                this.getMain().getLocale("gui.playerDeposit", playerDepositMap.get(player.getName())),
+                                this.getMain().getLocale("gui.playerChance", pool.calculateChanceToString(pool.getTotalPoolDeposit(), playerDepositMap.get(player.getName()))));
+                    } else {
+                        return new StaticGuiElement('c', new ItemStack(Material.AIR));
+                    }
                 }));
 
         this.getGui().addElement(new GuiPageElement('p', new ItemStack(XMaterial.matchXMaterial("SIGN").get().parseItem()), GuiPageElement.PageAction.PREVIOUS, this.getMain().getLocale("gui.prevPage")));
@@ -105,7 +122,7 @@ public class PoolViewerMenu extends BaseMenu {
     @Override
     String[] getSetup() {
         return new String[]{
-                "dh      i",
+                "dhc     i",
                 "ggggggggg",
                 "ggggggggg",
                 "ggggggggg",

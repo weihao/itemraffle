@@ -1,8 +1,8 @@
 # 本文件由 极光creeper 提供
 msg:
   notEnoughMoney: "&c啊哦，你没有足够的金币."
-  playerWinningMessage: "&a恭喜你中奖了&b{1}&a, 你以 &b{2}% &a的机率抽到了价值为&b${0}&a% 的物品"
-  broadcastWinner: "&b{0} &a成为了 {1}#{2} 的赢家, 以 &b{5}% &a的几率获取了价值 &b${4} 的 &7[&a{3}&7]&a."
+  playerWinningMessage: "&a恭喜你中奖了&b{1}&a, 你以&b{2}%&a的机率抽到了价值为&b${0}&a的物品"
+  broadcastWinner: "&b{0} &a成为了{1}#{2}的赢家, 以&b{5}%&a的几率获取了价值&b${4}的&7[&a{3}&7]&a."
  
 gui:
   listMenuTitle: "&b查看奖池"
