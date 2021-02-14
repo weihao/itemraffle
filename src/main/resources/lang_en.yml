@@ -15,6 +15,7 @@ gui:
   depositoryName: "&b{0}"
   depositoryMode: "&8Mode: &7{0}"
   itemSelectIndex: "&8Drawing Item: &7{0}"
+  prizeSize: "&8Prize Size: &7{0}"
   depositorySelection: "&8Selection: &7{0}"
   drawingInterval: "&8Frequency: &7{0}"
   nextDrawingTime: "&8Drawing Time: &7{0}"

@@ -52,6 +52,7 @@ public class DepositoryListCommonMenu extends BaseCommonMenu {
                                 this.getMain().getLocale("gui.depositoryMode", main.getEnumString(depository.getDepositoryMode().toString())),
                                 this.getMain().getLocale("gui.depositorySelection", main.getEnumString(depository.getDepositorySelection().toString())),
                                 this.getMain().getLocale("gui.itemSelectIndex", depository.getItemSelectIndex()),
+                                this.getMain().getLocale("gui.prizeSize", depository.getPrizes().size()),
                                 this.getMain().getLocale("gui.drawingInterval", CalendarUitl.formatSeconds(main, depository.getDrawingInterval())),
                                 this.getMain().getLocale("gui.nextDrawingTime", CalendarUitl.formatMillis(depository.getNextDrawingTime())),
                                 this.getMain().getLocale("gui.remainingNextDrawTime", CalendarUitl.formatSeconds(main, pool.getRemainingNextDrawTime())),
