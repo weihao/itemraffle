@@ -1,13 +1,16 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [0.0.3] - 2021-02-18
+### Fixed
+- Compatibility in 1.14 due to itemstack serialization
+
 ## [0.0.2] - 2021-02-13
 
 ### Added
 - Player skin display in pool viewer
 
-### Fixed
-- Compatibility in 1.14 due to itemstack serialization
 
 ## [0.0.1] - 2021-02-09
 
