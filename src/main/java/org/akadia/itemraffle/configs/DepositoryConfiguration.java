@@ -62,6 +62,18 @@ public class DepositoryConfiguration extends Configuration {
                 history.add(new ItemRaffleWinnerInfo(id, username, drawTimestamp, totalPoolValue, totalEntry, playerDepositValue, chance, awardedItem));
             }
 
+//            final String AB = "abcdefghijklmnopqrstuvwxyz";
+//            SecureRandom rnd = new SecureRandom();
+//
+//            for (int j = 0; j < 10; j++) {
+//                StringBuilder sb = new StringBuilder();
+//                for (int i = 0; i < 2; i++)
+//                    sb.append(AB.charAt(rnd.nextInt(AB.length())));
+//
+//                deposits.put(sb.toString(), String.valueOf(new Random().nextInt(1000000)));
+//            }
+
+
             depositories.add(new ItemRaffleDepository(
                     depositoryKey,
                     depositorySelection,
