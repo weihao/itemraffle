@@ -21,10 +21,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class ConfigFileManager {
+    private final Plugin plugin;
     Map<String, FileConfiguration> configs;
     Map<String, File> files;
     Logger logger;
-    private final Plugin plugin;
 
     public ConfigFileManager(Plugin plugin) {
         this.plugin = plugin;
